@@ -16,7 +16,7 @@
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
         <maven.compiler.source>21</maven.compiler.source>
         <maven.compiler.target>21</maven.compiler.target>
-        <exec.mainClass>com.mycompany.allaybotai.AllayBotAI</exec.mainClass>
+        <exec.mainClass>com.mycompany.allaybotai.controller.GameController</exec.mainClass>
     </properties>
     <dependencies>
         <!-- https://mvnrepository.com/artifact/com.formdev/flatlaf -->

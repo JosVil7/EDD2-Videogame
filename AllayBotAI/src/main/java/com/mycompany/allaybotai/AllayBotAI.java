@@ -3,17 +3,14 @@
  */
 package com.mycompany.allaybotai;
 
-import com.formdev.flatlaf.themes.FlatMacDarkLaf;
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
 import java.io.OutputStream;
 import java.net.HttpURLConnection;
 import java.net.MalformedURLException;
-import java.net.URI;
 import java.net.URL;
 import java.nio.charset.StandardCharsets;
-import javax.swing.UIManager;
 import org.json.JSONObject;
 
 /**
@@ -39,7 +36,7 @@ public class AllayBotAI {
                     "{\"model\": \"%s\", \"prompt\": \"%s\", \"stream\": false}", nombremodelo, promptText
             );
 
-            try (OutputStream os = conn.getOutputStream()) {
+            try ( OutputStream os = conn.getOutputStream()) {
                 byte[] input = jsonInputString.getBytes(StandardCharsets.UTF_8);
                 os.write(input, 0, input.length);
             }
@@ -75,15 +72,4 @@ public class AllayBotAI {
         }
     }
 
-    public static void main(String[] args) {
-        //UI
-        try {
-            UIManager.setLookAndFeel(new FlatMacDarkLaf());
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-
-        MenuBienvenida menu = new MenuBienvenida();
-        menu.setVisible(true);
-    }
 }

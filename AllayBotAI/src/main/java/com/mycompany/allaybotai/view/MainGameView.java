@@ -1,5 +1,6 @@
-package com.mycompany.allaybotai;
+package com.mycompany.allaybotai.view;
 
+import com.mycompany.allaybotai.controller.GameController;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.io.BufferedReader;
@@ -17,8 +18,9 @@ import javax.swing.ImageIcon;
 import javax.swing.JOptionPane;
 import org.json.JSONObject;
 
-public class Juego extends javax.swing.JFrame {
+public class MainGameView extends javax.swing.JFrame {
 
+    private final GameController controller;
     private int jugadorFila = 0;
     private int jugadorColumna = 0;
     public int turnosRestantes = 25;
@@ -28,7 +30,8 @@ public class Juego extends javax.swing.JFrame {
     private int tesorosEncontrados = 0;
     private final Random random = new Random();
 
-    public Juego() {
+    public MainGameView(GameController controller) {
+        this.controller = controller;
         initComponents();
         generarMapa();
         Botones();
@@ -199,7 +202,7 @@ public class Juego extends javax.swing.JFrame {
             json.put("stream", false);
 
             String jsonInputString = json.toString();
-            try (OutputStream os = conn.getOutputStream()) {
+            try ( OutputStream os = conn.getOutputStream()) {
                 byte[] input = jsonInputString.getBytes(StandardCharsets.UTF_8);
                 os.write(input, 0, input.length);
             }
@@ -485,7 +488,7 @@ public class Juego extends javax.swing.JFrame {
             try {
                 enviarSolicitudIA("Dame una pista sobre este área.");
             } catch (IOException ex) {
-                Logger.getLogger(Juego.class.getName()).log(Level.SEVERE, null, ex);
+                Logger.getLogger(MainGameView.class.getName()).log(Level.SEVERE, null, ex);
             }
         } else {
             JOptionPane.showMessageDialog(this, "¡El juego ha terminado! No necesitas más pistas.");
@@ -493,18 +496,16 @@ public class Juego extends javax.swing.JFrame {
     }//GEN-LAST:event_PistasMouseClicked
 
     private void RegresarMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_RegresarMouseClicked
-        MenuBienvenida menu = new MenuBienvenida();
-        menu.setVisible(true);
-        this.dispose();
+        controller.goToStartMenu(this);
     }//GEN-LAST:event_RegresarMouseClicked
 
-    public static void main(String args[]) {
-        java.awt.EventQueue.invokeLater(new Runnable() {
-            public void run() {
-                new Juego().setVisible(true);
-            }
-        });
-    }
+//    public static void main(String args[]) {
+//        java.awt.EventQueue.invokeLater(new Runnable() {
+//            public void run() {
+//                new MainGameView().setVisible(true);
+//            }
+//        });
+//    }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JTextArea Allay;
