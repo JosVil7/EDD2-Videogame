@@ -25,8 +25,7 @@ public class MainGameView extends javax.swing.JFrame {
     private int jugadorColumna = 0;
     public int turnosRestantes = 25;
 
-    private final int gridSize = 5; // Tamaño del mapa 5x5
-    private final int[][] mapa = new int[gridSize][gridSize];
+    
     private int tesorosEncontrados = 0;
     private final Random random = new Random();
 
@@ -34,13 +33,10 @@ public class MainGameView extends javax.swing.JFrame {
         this.controller = controller;
         initComponents();
         generarMapa();
-        Botones();
+        crearBotones(0, 1);
         setIconImage(new ImageIcon(getClass().getResource("/images/tesoro1_icon.png")).getImage());
     }
 
-    private void Botones() {
-        crearBotones(0, 1);
-    }
 
     // Metodo recursivo para los botones
     private void crearBotones(int index, int numero) {
@@ -96,140 +92,6 @@ public class MainGameView extends javax.swing.JFrame {
             generarTrampas(cantidad - 1); // Llamada recursiva
         } else {
             generarTrampas(cantidad);
-        }
-    }
-
-    private void enviarSolicitudIA(String texto) throws ProtocolException, IOException {
-        String nombremodelo = "llama3.2";
-        StringBuilder mapaTexto = new StringBuilder("Mapa del Juego (5x5):\n");
-        for (int i = 0; i < gridSize; i++) {
-            for (int j = 0; j < gridSize; j++) {
-                if (mapa[i][j] == 1) {
-                    mapaTexto.append(". ");
-                } else if (mapa[i][j] == -1) {
-                    mapaTexto.append(". ");
-                } else if (i == jugadorFila && j == jugadorColumna) {
-                    mapaTexto.append("P ");
-                } else {
-                    mapaTexto.append(". ");
-                }
-            }
-            mapaTexto.append("\n");
-        }
-
-        // Calcular la celda actual
-        int celdaActual = (jugadorFila * gridSize) + jugadorColumna + 1;
-        StringBuilder adyacentes = new StringBuilder();
-
-        // Direcciones: arriba, abajo, izquierda, derecha
-        if (jugadorFila > 0) {
-            adyacentes.append("Arriba: Celda " + ((jugadorFila - 1) * gridSize + jugadorColumna + 1) + "\n");
-        }
-        if (jugadorFila < gridSize - 1) {
-            adyacentes.append("Abajo: Celda " + ((jugadorFila + 1) * gridSize + jugadorColumna + 1) + "\n");
-        }
-        if (jugadorColumna > 0) {
-            adyacentes.append("Izquierda: Celda " + (jugadorFila * gridSize + jugadorColumna - 1 + 1) + "\n");
-        }
-        if (jugadorColumna < gridSize - 1) {
-            adyacentes.append("Derecha: Celda " + (jugadorFila * gridSize + jugadorColumna + 1 + 1) + "\n");
-        }
-
-        // Direcciones diagonales
-        if (jugadorFila > 0 && jugadorColumna > 0) {
-            adyacentes.append("Diagonal superior-izquierda: Celda " + ((jugadorFila - 1) * gridSize + jugadorColumna - 1 + 1) + "\n");
-        }
-        if (jugadorFila > 0 && jugadorColumna < gridSize - 1) {
-            adyacentes.append("Diagonal superior-derecha: Celda " + ((jugadorFila - 1) * gridSize + jugadorColumna + 1 + 1) + "\n");
-        }
-        if (jugadorFila < gridSize - 1 && jugadorColumna > 0) {
-            adyacentes.append("Diagonal inferior-izquierda: Celda " + ((jugadorFila + 1) * gridSize + jugadorColumna - 1 + 1) + "\n");
-        }
-        if (jugadorFila < gridSize - 1 && jugadorColumna < gridSize - 1) {
-            adyacentes.append("Diagonal inferior-derecha: Celda " + ((jugadorFila + 1) * gridSize + jugadorColumna + 1 + 1) + "\n");
-        }
-
-        StringBuilder advertencias = new StringBuilder();
-        if (jugadorFila > 0 && mapa[jugadorFila - 1][jugadorColumna] == -1) {
-            advertencias.append("Evita moverte hacia la celda arriba.\n");
-        }
-        if (jugadorFila < gridSize - 1 && mapa[jugadorFila + 1][jugadorColumna] == -1) {
-            advertencias.append("Evita moverte hacia la celda abajo.\n");
-        }
-        if (jugadorColumna > 0 && mapa[jugadorFila][jugadorColumna - 1] == -1) {
-            advertencias.append("Evita moverte hacia la celda izquierda.\n");
-        }
-        if (jugadorColumna < gridSize - 1 && mapa[jugadorFila][jugadorColumna + 1] == -1) {
-            advertencias.append("Evita moverte hacia la celda derecha.\n");
-        }
-        if (jugadorFila > 0 && mapa[jugadorFila - 1][jugadorColumna] == 1) {
-            advertencias.append("Quizás quieras explorar la celda superior.\n");
-        }
-        if (jugadorFila < gridSize - 1 && mapa[jugadorFila + 1][jugadorColumna] == 1) {
-            advertencias.append("Quizás quieras explorar la celda inferior.\n");
-        }
-        if (jugadorColumna > 0 && mapa[jugadorFila][jugadorColumna - 1] == 1) {
-            advertencias.append("Quizás quieras explorar la celda izquierda.\n");
-        }
-        if (jugadorColumna < gridSize - 1 && mapa[jugadorFila][jugadorColumna + 1] == 1) {
-            advertencias.append("Quizás quieras explorar la celda derecha.\n");
-        }
-
-        advertencias.append("Vas a decirme la celda actual en la que estoy sin decir que yo te lo dije, la cual es " + celdaActual + " y quiero que no supongas que estoy mirando a alguna celda necesito que me ayudes en mi aventura, Necesito que no seas tan directa con las pistas, pero que tambien me ayudes a donde no tengo que ir y a donde si tengo que ir SIN decirlo directamente osea que no me vas a decir las cosas tan directo, las diras de manera de pista o sutiles, no me digas que hacer, quiero que me des pistas y cosas utiles que me sirvan en esta aventura, no me hagas preguntas en tu respuesta porque no podre responderlas, recuerda no me hagas preguntas, sin darme mas preguntas por favor, nada de preguntas hacia mi, recuerda no hacerme preguntas, recuerda no hacerme preguntas a mi.\n");
-
-        String mapa = "\n1   2   3   4   5\n"
-                + "6   7   8   9   10\n"
-                + "11  12  13  14  15\n"
-                + "16  17  18  19  20\n"
-                + "21  22  23  24  25\n";
-
-        advertencias.append("\nUn ejemplo del mapa donde estoy yo es asi: " + mapa + " recuerda que es el mapa donde estoy yo\n");
-        advertencias.append("\nTambien recuerda que me vas a dar pistas e indicaciones de donde puedo ir yo, no me hagas preguntas a mi de ningun tipo, solo dime pistas e indicaciones sin ser tan directo de donde puedo ir, dime con pistas informacion de las celdas vecinas.\n");
-
-        String mensajeFinal = mapaTexto.toString() + "\nPosición actual: Celda " + celdaActual + "\n" + adyacentes.toString() + "\n" + advertencias.toString() + "\nSigue explorando, ten cuidado con los obstáculos.\n";
-
-        try {
-            URL url = new URL("http://localhost:11434/api/generate");
-            HttpURLConnection conn = (HttpURLConnection) url.openConnection();
-            conn.setRequestMethod("POST");
-            conn.setRequestProperty("Content-Type", "application/json; utf-8");
-            conn.setRequestProperty("Accept", "application/json");
-            conn.setDoOutput(true);
-
-            JSONObject json = new JSONObject();
-            json.put("model", nombremodelo);
-            json.put("prompt", mensajeFinal);
-            json.put("stream", false);
-
-            String jsonInputString = json.toString();
-            try ( OutputStream os = conn.getOutputStream()) {
-                byte[] input = jsonInputString.getBytes(StandardCharsets.UTF_8);
-                os.write(input, 0, input.length);
-            }
-
-            int code = conn.getResponseCode();
-            if (code >= 400) {
-                JOptionPane.showMessageDialog(this, "Error al conectarse a la IA. Código: " + code);
-            } else {
-                BufferedReader in = new BufferedReader(new java.io.InputStreamReader(conn.getInputStream(), StandardCharsets.UTF_8));
-                StringBuilder response = new StringBuilder();
-                String line;
-                while ((line = in.readLine()) != null) {
-                    response.append(line);
-                }
-                in.close();
-
-                JSONObject jsonResponse = new JSONObject(response.toString());
-                String responseText = jsonResponse.getString("response");
-
-                // Mostrar la respuesta de la IA
-                Allay.setText("[AI] Allay Bot: " + responseText + "\n");
-            }
-            conn.disconnect();
-        } catch (MalformedURLException e) {
-            Allay.append("[ERROR] URL inválida: " + e.getMessage() + "\n");
-        } catch (IOException e) {
-            Allay.append("[ERROR] Conexión fallida: " + e.getMessage() + "\n");
         }
     }
 
@@ -334,10 +196,6 @@ public class MainGameView extends javax.swing.JFrame {
     private void initComponents() {
 
         Mapa = new javax.swing.JPanel();
-        jScrollPane1 = new javax.swing.JScrollPane();
-        Allay = new javax.swing.JTextArea();
-        Pistas = new javax.swing.JPanel();
-        jLabel1 = new javax.swing.JLabel();
         Tesoros = new javax.swing.JLabel();
         jLabel3 = new javax.swing.JLabel();
         Regresar = new javax.swing.JPanel();
@@ -351,41 +209,6 @@ public class MainGameView extends javax.swing.JFrame {
         Mapa.setBackground(new java.awt.Color(53, 53, 53));
         Mapa.setPreferredSize(new java.awt.Dimension(250, 250));
         Mapa.setLayout(new java.awt.GridLayout(5, 5));
-
-        Allay.setEditable(false);
-        Allay.setFocusable(false);
-        Allay.setColumns(20);
-        Allay.setRows(5);
-        jScrollPane1.setViewportView(Allay);
-
-        Pistas.setBackground(new java.awt.Color(0, 153, 153));
-        Pistas.setBorder(new javax.swing.border.MatteBorder(null));
-        Pistas.setForeground(new java.awt.Color(0, 153, 153));
-        Pistas.addMouseListener(new java.awt.event.MouseAdapter() {
-            public void mouseClicked(java.awt.event.MouseEvent evt) {
-                PistasMouseClicked(evt);
-            }
-        });
-
-        jLabel1.setFont(new java.awt.Font("sansserif", 1, 14)); // NOI18N
-        jLabel1.setText("Pedir Pistas");
-
-        javax.swing.GroupLayout PistasLayout = new javax.swing.GroupLayout(Pistas);
-        Pistas.setLayout(PistasLayout);
-        PistasLayout.setHorizontalGroup(
-            PistasLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, PistasLayout.createSequentialGroup()
-                .addContainerGap(73, Short.MAX_VALUE)
-                .addComponent(jLabel1)
-                .addGap(65, 65, 65))
-        );
-        PistasLayout.setVerticalGroup(
-            PistasLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(PistasLayout.createSequentialGroup()
-                .addContainerGap()
-                .addComponent(jLabel1)
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
-        );
 
         Tesoros.setFont(new java.awt.Font("sansserif", 1, 14)); // NOI18N
         Tesoros.setHorizontalAlignment(javax.swing.SwingConstants.RIGHT);
@@ -442,8 +265,7 @@ public class MainGameView extends javax.swing.JFrame {
                     .addGroup(layout.createSequentialGroup()
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                             .addGroup(layout.createSequentialGroup()
-                                .addComponent(Pistas, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                                .addGap(235, 235, 235)
                                 .addComponent(Posicion, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
                             .addComponent(jLabel3, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
                         .addGap(143, 143, 143)
@@ -453,8 +275,7 @@ public class MainGameView extends javax.swing.JFrame {
                             .addComponent(Tesoros, javax.swing.GroupLayout.PREFERRED_SIZE, 400, javax.swing.GroupLayout.PREFERRED_SIZE)
                             .addComponent(Regresar, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))
                     .addGroup(layout.createSequentialGroup()
-                        .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 348, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addGap(354, 354, 354)
                         .addComponent(Mapa, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)))
                 .addContainerGap())
         );
@@ -466,16 +287,12 @@ public class MainGameView extends javax.swing.JFrame {
                     .addComponent(jLabel3)
                     .addComponent(Regresar, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addGap(28, 28, 28)
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                        .addComponent(Tesoros, javax.swing.GroupLayout.PREFERRED_SIZE, 33, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addComponent(Posicion, javax.swing.GroupLayout.PREFERRED_SIZE, 35, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addComponent(Turnos, javax.swing.GroupLayout.PREFERRED_SIZE, 33, javax.swing.GroupLayout.PREFERRED_SIZE))
-                    .addComponent(Pistas, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(Tesoros, javax.swing.GroupLayout.PREFERRED_SIZE, 33, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(Posicion, javax.swing.GroupLayout.PREFERRED_SIZE, 35, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(Turnos, javax.swing.GroupLayout.PREFERRED_SIZE, 33, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addGap(18, 18, 18)
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(Mapa, javax.swing.GroupLayout.PREFERRED_SIZE, 476, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 476, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addComponent(Mapa, javax.swing.GroupLayout.PREFERRED_SIZE, 476, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addContainerGap())
         );
 
@@ -483,41 +300,18 @@ public class MainGameView extends javax.swing.JFrame {
         setLocationRelativeTo(null);
     }// </editor-fold>//GEN-END:initComponents
 
-    private void PistasMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_PistasMouseClicked
-        if (tesorosEncontrados < 5) {
-            try {
-                enviarSolicitudIA("Dame una pista sobre este área.");
-            } catch (IOException ex) {
-                Logger.getLogger(MainGameView.class.getName()).log(Level.SEVERE, null, ex);
-            }
-        } else {
-            JOptionPane.showMessageDialog(this, "¡El juego ha terminado! No necesitas más pistas.");
-        }
-    }//GEN-LAST:event_PistasMouseClicked
-
     private void RegresarMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_RegresarMouseClicked
         controller.goToStartMenu(this);
     }//GEN-LAST:event_RegresarMouseClicked
 
-//    public static void main(String args[]) {
-//        java.awt.EventQueue.invokeLater(new Runnable() {
-//            public void run() {
-//                new MainGameView().setVisible(true);
-//            }
-//        });
-//    }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
-    private javax.swing.JTextArea Allay;
     private javax.swing.JPanel Mapa;
-    private javax.swing.JPanel Pistas;
     private javax.swing.JLabel Posicion;
     private javax.swing.JPanel Regresar;
     private javax.swing.JLabel Tesoros;
     private javax.swing.JLabel Turnos;
-    private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel3;
     private javax.swing.JLabel jLabel4;
-    private javax.swing.JScrollPane jScrollPane1;
     // End of variables declaration//GEN-END:variables
 }

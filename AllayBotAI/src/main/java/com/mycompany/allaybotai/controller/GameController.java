@@ -17,7 +17,7 @@ import javax.swing.UIManager;
 public class GameController {
 
     //Main method
-    public static void main(String[] args) {
+    public GameController() {
 
         //UI
         try {
@@ -27,6 +27,8 @@ public class GameController {
         }
 
         // Begin with the Start menu
+        StartMenuView menu = new StartMenuView(this);
+            menu.setVisible(true);
         
     }
 

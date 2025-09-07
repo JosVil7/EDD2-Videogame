@@ -16,7 +16,7 @@
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
         <maven.compiler.source>21</maven.compiler.source>
         <maven.compiler.target>21</maven.compiler.target>
-        <exec.mainClass>com.mycompany.allaybotai.controller.GameController</exec.mainClass>
+        <exec.mainClass>com.mycompany.allaybotai.main.Main</exec.mainClass>
     </properties>
     <dependencies>
         <!-- https://mvnrepository.com/artifact/com.formdev/flatlaf -->
@@ -32,9 +32,10 @@
             <version>20211205</version>
         </dependency>
         <dependency>
-            <groupId>unknown.binary</groupId>
+            <groupId>org.netbeans.external</groupId>
             <artifactId>AbsoluteLayout</artifactId>
-            <version>SNAPSHOT</version>
+            <version>RELEASE270</version>
         </dependency>
+
     </dependencies>
 </project>
