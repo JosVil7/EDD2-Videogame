@@ -1,22 +1,13 @@
 package com.mycompany.allaybotai.view;
 
 import com.mycompany.allaybotai.controller.GameController;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
-import java.io.BufferedReader;
+import java.awt.Image;
 import java.io.IOException;
-import java.io.OutputStream;
-import java.net.HttpURLConnection;
-import java.net.MalformedURLException;
-import java.net.ProtocolException;
-import java.net.URL;
-import java.nio.charset.StandardCharsets;
 import java.util.Random;
-import java.util.logging.Level;
-import java.util.logging.Logger;
+import javax.imageio.ImageIO;
 import javax.swing.ImageIcon;
-import javax.swing.JOptionPane;
-import org.json.JSONObject;
+import javax.swing.JLabel;
+import javax.swing.JPanel;
 
 public class MainGameView extends javax.swing.JFrame {
 
@@ -25,135 +16,92 @@ public class MainGameView extends javax.swing.JFrame {
     private int jugadorColumna = 0;
     public int turnosRestantes = 25;
 
-    
     private int tesorosEncontrados = 0;
     private final Random random = new Random();
 
-    public MainGameView(GameController controller) {
+    public MainGameView(GameController controller) throws IOException {
         this.controller = controller;
         initComponents();
-        generarMapa();
-        crearBotones(0, 1);
         setIconImage(new ImageIcon(getClass().getResource("/images/tesoro1_icon.png")).getImage());
     }
 
 
-    // Metodo recursivo para los botones
-    private void crearBotones(int index, int numero) {
-        if (index >= gridSize * gridSize) {
-            return; // Caso base cuando ya se han creado todos los botones
+    public JPanel getMapa() {
+        return Mapa;
+    }
+    
+    
+
+    public void createButtons() throws IOException {
+        for (int i = 0; i < 25; i++) {
+            JLabel tile = new JLabel();
+            Image img = ImageIO.read(getClass().getResource("/images/tiles/unexplored.png"));
+            img = img.getScaledInstance(100, 100, Image.SCALE_SMOOTH);
+            tile.setIcon(new ImageIcon(img));
+            tile.setBorder(null);
+            Mapa.add(tile);
         }
 
-        final int x = index / gridSize;
-        final int y = index % gridSize;
-
-        javax.swing.JButton boton = new javax.swing.JButton(Integer.toString(numero));
-        boton.setFont(new java.awt.Font("Arial", java.awt.Font.BOLD, 18));
-        boton.addActionListener(new ActionListener() {
-            public void actionPerformed(ActionEvent e) {
-                explorarCelda(x, y);
-            }
-        });
-
-        Mapa.add(boton);
-
-        crearBotones(index + 1, numero + 1);
     }
 
-    private void generarMapa() {
-        generarTesoros(5);
-        generarTrampas(3);
-    }
-
-    // Metodo recursivo para los tesoros
-    private void generarTesoros(int cantidad) {
-        if (cantidad == 0) {
-            return; // Caso base cuando ya se generaron todos los tesoros
-        }
-        int x = random.nextInt(gridSize);
-        int y = random.nextInt(gridSize);
-        if (mapa[x][y] == 0) {
-            mapa[x][y] = 1;
-            generarTesoros(cantidad - 1); // Llamada recursiva
-        } else {
-            generarTesoros(cantidad);
-        }
-    }
-
-    // Metodo recursivo para las trampas
-    private void generarTrampas(int cantidad) {
-        if (cantidad == 0) {
-            return; // Caso base cuando ya se generaron todas las trampas
-        }
-        int x = random.nextInt(gridSize);
-        int y = random.nextInt(gridSize);
-        if (mapa[x][y] == 0) {
-            mapa[x][y] = -1;
-            generarTrampas(cantidad - 1); // Llamada recursiva
-        } else {
-            generarTrampas(cantidad);
-        }
-    }
-
-    private void explorarCelda(int fila, int columna) {
-        jugadorFila = fila;
-        jugadorColumna = columna;
-
-        // Actualizar la etiqueta con el número de la celda
-        Posicion.setText("Celda: " + (fila * gridSize + columna + 1));
-
-        if (turnosRestantes <= 0) {
-            JOptionPane.showMessageDialog(null, "¡No tienes más turnos! Fin del juego.");
-            finalizarJuego();
-            return;
-        }
-
-        int celdaActual = mapa[fila][columna]; // Valor de la celda en el mapa
-
-        if (celdaActual == 1) { // Tesoro encontrado
-            int decrementoms = 1;//para usar en la funcion recursiva
-
-            tesorosEncontrados = tesorosmas(tesorosEncontrados, decrementoms);//recursividad
-            mapa[fila][columna] = 0; // Eliminar el tesoro del mapa
-            JOptionPane.showMessageDialog(null, "¡Encontraste un tesoro!");
-            Tesoros.setText("Tesoros encontrados: " + tesorosEncontrados);
-            turnosRestantes = trampa(turnosRestantes, decrementoms);
-            Turnos.setText("Turnos restantes: " + turnosRestantes);
-
-        } else if (celdaActual == -1) { // Trampa encontrada
-            int decrementot = 2;// Decrementos para la funciones recursivas de los reductores de los turnos en las trampas
-            int decrementom = 1;// Decrementoss para la funcion recursiva de los reductores de tesoros en la trampas
-
-            JOptionPane.showMessageDialog(null, "¡Pisas una trampa! Pierdes un turno");
-            turnosRestantes = trampa(turnosRestantes, decrementot);
-            Turnos.setText("Turnos restantes: " + turnosRestantes);
-
-            if (tesorosEncontrados > 0) {
-                JOptionPane.showMessageDialog(null, "Pierdes un tesoro."); //para decontar los tesoros aparte
-                tesorosEncontrados = tesorosmenos(tesorosEncontrados, decrementom);
-                Tesoros.setText("Tesoros encontrados: " + tesorosEncontrados);
-            }
-
-            if (turnosRestantes <= 0) {
-                JOptionPane.showMessageDialog(null, "¡No tienes más turnos! Fin del juego.");
-                finalizarJuego();
-                return;
-            }
-
-        } else { // Celda vacía
-            int decrementosv = 1;
-            JOptionPane.showMessageDialog(null, "Nada en esta celda.");
-            turnosRestantes = trampa(turnosRestantes, decrementosv);//recursividad
-            Turnos.setText("Turnos restantes: " + turnosRestantes);
-        }
-
-        // Verificar si se han encontrado todos los tesoros
-        if (tesorosEncontrados == 5) {
-            JOptionPane.showMessageDialog(null, "¡Has encontrado todos los tesoros! ¡Ganaste!");
-            finalizarJuego();
-        }
-    }
-
+//    private void explorarCelda(int fila, int columna) {
+//        jugadorFila = fila;
+//        jugadorColumna = columna;
+//
+//        // Actualizar la etiqueta con el número de la celda
+//        Posicion.setText("Celda: " + (fila * gridSize + columna + 1));
+//
+//        if (turnosRestantes <= 0) {
+//            JOptionPane.showMessageDialog(null, "¡No tienes más turnos! Fin del juego.");
+//            finalizarJuego();
+//            return;
+//        }
+//
+//        int celdaActual = mapa[fila][columna]; // Valor de la celda en el mapa
+//
+//        if (celdaActual == 1) { // Tesoro encontrado
+//            int decrementoms = 1;//para usar en la funcion recursiva
+//
+//            tesorosEncontrados = tesorosmas(tesorosEncontrados, decrementoms);//recursividad
+//            mapa[fila][columna] = 0; // Eliminar el tesoro del mapa
+//            JOptionPane.showMessageDialog(null, "¡Encontraste un tesoro!");
+//            Tesoros.setText("Tesoros encontrados: " + tesorosEncontrados);
+//            turnosRestantes = trampa(turnosRestantes, decrementoms);
+//            Turnos.setText("Turnos restantes: " + turnosRestantes);
+//
+//        } else if (celdaActual == -1) { // Trampa encontrada
+//            int decrementot = 2;// Decrementos para la funciones recursivas de los reductores de los turnos en las trampas
+//            int decrementom = 1;// Decrementoss para la funcion recursiva de los reductores de tesoros en la trampas
+//
+//            JOptionPane.showMessageDialog(null, "¡Pisas una trampa! Pierdes un turno");
+//            turnosRestantes = trampa(turnosRestantes, decrementot);
+//            Turnos.setText("Turnos restantes: " + turnosRestantes);
+//
+//            if (tesorosEncontrados > 0) {
+//                JOptionPane.showMessageDialog(null, "Pierdes un tesoro."); //para decontar los tesoros aparte
+//                tesorosEncontrados = tesorosmenos(tesorosEncontrados, decrementom);
+//                Tesoros.setText("Tesoros encontrados: " + tesorosEncontrados);
+//            }
+//
+//            if (turnosRestantes <= 0) {
+//                JOptionPane.showMessageDialog(null, "¡No tienes más turnos! Fin del juego.");
+//                finalizarJuego();
+//                return;
+//            }
+//
+//        } else { // Celda vacía
+//            int decrementosv = 1;
+//            JOptionPane.showMessageDialog(null, "Nada en esta celda.");
+//            turnosRestantes = trampa(turnosRestantes, decrementosv);//recursividad
+//            Turnos.setText("Turnos restantes: " + turnosRestantes);
+//        }
+//
+//        // Verificar si se han encontrado todos los tesoros
+//        if (tesorosEncontrados == 5) {
+//            JOptionPane.showMessageDialog(null, "¡Has encontrado todos los tesoros! ¡Ganaste!");
+//            finalizarJuego();
+//        }
+//    }
     //Funcion recursiva para ir quitando turnos extra cuando caes en una trampa
     private static int trampa(int turnosRestantes, int decremento) {
         if (decremento <= 0) {
@@ -206,7 +154,8 @@ public class MainGameView extends javax.swing.JFrame {
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         setTitle("AllayQuest");
 
-        Mapa.setBackground(new java.awt.Color(53, 53, 53));
+        Mapa.setBackground(new java.awt.Color(46, 125, 50));
+        Mapa.setMaximumSize(new java.awt.Dimension(250, 250));
         Mapa.setPreferredSize(new java.awt.Dimension(250, 250));
         Mapa.setLayout(new java.awt.GridLayout(5, 5));
 
@@ -266,8 +215,8 @@ public class MainGameView extends javax.swing.JFrame {
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                             .addGroup(layout.createSequentialGroup()
                                 .addGap(235, 235, 235)
-                                .addComponent(Posicion, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
-                            .addComponent(jLabel3, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                                .addComponent(Posicion, javax.swing.GroupLayout.PREFERRED_SIZE, 1, Short.MAX_VALUE))
+                            .addComponent(jLabel3, javax.swing.GroupLayout.PREFERRED_SIZE, 0, Short.MAX_VALUE))
                         .addGap(143, 143, 143)
                         .addComponent(Turnos, javax.swing.GroupLayout.PREFERRED_SIZE, 153, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
@@ -276,7 +225,7 @@ public class MainGameView extends javax.swing.JFrame {
                             .addComponent(Regresar, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))
                     .addGroup(layout.createSequentialGroup()
                         .addGap(354, 354, 354)
-                        .addComponent(Mapa, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)))
+                        .addComponent(Mapa, javax.swing.GroupLayout.DEFAULT_SIZE, 584, Short.MAX_VALUE)))
                 .addContainerGap())
         );
         layout.setVerticalGroup(
@@ -292,7 +241,7 @@ public class MainGameView extends javax.swing.JFrame {
                     .addComponent(Posicion, javax.swing.GroupLayout.PREFERRED_SIZE, 35, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(Turnos, javax.swing.GroupLayout.PREFERRED_SIZE, 33, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addGap(18, 18, 18)
-                .addComponent(Mapa, javax.swing.GroupLayout.PREFERRED_SIZE, 476, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addComponent(Mapa, javax.swing.GroupLayout.DEFAULT_SIZE, 500, Short.MAX_VALUE)
                 .addContainerGap())
         );
 
@@ -314,4 +263,41 @@ public class MainGameView extends javax.swing.JFrame {
     private javax.swing.JLabel jLabel3;
     private javax.swing.JLabel jLabel4;
     // End of variables declaration//GEN-END:variables
+
+    public void setPlayerFront(int playerPosition) throws IOException {
+        JLabel tile = (JLabel) this.Mapa.getComponent(playerPosition);
+        Image img = ImageIO.read(getClass().getResource("/images/tiles/front.png"));
+        img = img.getScaledInstance(100, 100, Image.SCALE_SMOOTH);
+        tile.setIcon(new ImageIcon(img));
+    }
+    public void setPlayerBack(int playerPosition) throws IOException {
+        JLabel tile = (JLabel) this.Mapa.getComponent(playerPosition);
+        Image img = ImageIO.read(getClass().getResource("/images/tiles/back.png"));
+        img = img.getScaledInstance(100, 100, Image.SCALE_SMOOTH);
+        tile.setIcon(new ImageIcon(img));
+    }
+    public void setPlayerLeft(int playerPosition) throws IOException {
+        JLabel tile = (JLabel) this.Mapa.getComponent(playerPosition);
+        Image img = ImageIO.read(getClass().getResource("/images/tiles/left.png"));
+        img = img.getScaledInstance(100, 100, Image.SCALE_SMOOTH);
+        tile.setIcon(new ImageIcon(img));
+    }
+    public void setPlayerRight(int playerPosition) throws IOException {
+        JLabel tile = (JLabel) this.Mapa.getComponent(playerPosition);
+        Image img = ImageIO.read(getClass().getResource("/images/tiles/right.png"));
+        img = img.getScaledInstance(100, 100, Image.SCALE_SMOOTH);
+        tile.setIcon(new ImageIcon(img));
+    }
+    public void setTileChest(int playerPosition) throws IOException {
+        JLabel tile = (JLabel) this.Mapa.getComponent(playerPosition);
+        Image img = ImageIO.read(getClass().getResource("/images/tiles/chest.png"));
+        img = img.getScaledInstance(100, 100, Image.SCALE_SMOOTH);
+        tile.setIcon(new ImageIcon(img));
+    }
+    public void setTileEmpty(int playerPosition) throws IOException {
+        JLabel tile = (JLabel) this.Mapa.getComponent(playerPosition);
+        Image img = ImageIO.read(getClass().getResource("/images/tiles/empty.png"));
+        img = img.getScaledInstance(100, 100, Image.SCALE_SMOOTH);
+        tile.setIcon(new ImageIcon(img));
+    }
 }

@@ -5,9 +5,11 @@
 package com.mycompany.allaybotai.controller;
 
 import com.formdev.flatlaf.themes.FlatMacDarkLaf;
+import com.mycompany.allaybotai.model.MapModel;
 import com.mycompany.allaybotai.view.CreditsView;
 import com.mycompany.allaybotai.view.MainGameView;
 import com.mycompany.allaybotai.view.StartMenuView;
+import java.io.IOException;
 import javax.swing.UIManager;
 
 /**
@@ -16,53 +18,140 @@ import javax.swing.UIManager;
  */
 public class GameController {
 
+    MainGameView mainGame;
+    PlayerController playerController;
+    MapModel map;
+
     //Main method
     public GameController() {
-
         //UI
         try {
             UIManager.setLookAndFeel(new FlatMacDarkLaf());
         } catch (Exception e) {
             e.printStackTrace();
         }
-
         // Begin with the Start menu
         StartMenuView menu = new StartMenuView(this);
-            menu.setVisible(true);
-        
+        menu.setVisible(true);
+
     }
 
-    //Initialize StartMenu, dispose of the given frame
+    //Initialize set view, dispose of the given frame
     public boolean goToStartMenu(javax.swing.JFrame frame) {
         try {
             StartMenuView menu = new StartMenuView(this);
+            frame.dispose();
             menu.setVisible(true);
-            frame.dispose();
-            return true;
-        } catch (Exception e) {
-            return false;
-        }
-    }
-    
-    public boolean goToCredits(javax.swing.JFrame frame) {
-        try {
-            CreditsView credits = new CreditsView(this);
-            credits.setVisible(true);
-            frame.dispose();
-            return true;
-        } catch (Exception e) {
-            return false;
-        }
-    }
-    public boolean goToMainGame(javax.swing.JFrame frame) {
-        try {
-            MainGameView mainGame = new MainGameView(this);
-            mainGame.setVisible(true);
-            frame.dispose();
             return true;
         } catch (Exception e) {
             return false;
         }
     }
 
+    public boolean goToCredits(javax.swing.JFrame frame) {
+        try {
+            CreditsView credits = new CreditsView(this);
+            frame.dispose();
+            credits.setVisible(true);
+            return true;
+        } catch (Exception e) {
+            return false;
+        }
+    }
+
+    public boolean goToMainGame(javax.swing.JFrame frame) {
+        try {
+            this.mainGame = new MainGameView(this);
+            frame.dispose();
+            this.beginGame(); //Game BEGUNNN
+            mainGame.setVisible(true);
+            return true;
+        } catch (Exception e) {
+            return false;
+        }
+    }
+
+    //Map Logic
+    private void beginGame() throws IOException {
+        this.playerController = new PlayerController(this, this.mainGame);
+        this.generateMap();
+        this.mainGame.createButtons();
+        if (this.map.getPlayerPosition() == -1) {
+            System.out.println("Player not found, WORRY");
+        }
+        this.mainGame.setPlayerFront(this.map.getPlayerPosition());
+    }
+
+    private void generateMap() {
+        this.map = new MapModel();
+    }
+
+    public void moveUp() throws IOException {
+        if (this.map.getX() == 0) {
+            //I can't move there panel
+        } else {
+            int eventCode = this.map.exploreCell(this.map.getX() - 1, this.map.getY());
+            int position = (this.map.getX() - 1) * 5 + this.map.getY();
+            
+            this.mainGame.setPlayerBack(position);
+            
+            this.leaveCell(this.map.getX(), this.map.getY());
+            if (eventCode < 0) {
+                //We've already been here
+            } else {
+
+            }
+        }
+    }
+
+    public void moveDown() {
+        throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
+    }
+
+    public void moveLeft() {
+        throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
+    }
+
+    public void moveRight() {
+        throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
+    }
+
+    public void leaveCell(int i, int j) throws IOException {
+        int eventCode = this.map.exploreCell(i, j);
+        int position = i * 5 + j;
+        this.map.leaveCell(i, j);
+        this.setTileInView(Math.abs(eventCode), position);
+    }
+
+    public void setTileInView(int eventCode, int position) throws IOException {
+        switch (eventCode) {
+            //Empty
+            case 0:
+                this.mainGame.setTileEmpty(position);
+                break;
+            //Boss
+            case 1:
+                break;
+
+            //Portals
+            case 2:
+                break;
+
+            //Traps
+            case 3:
+                break;
+
+            //Gem or chest
+            case 4:
+                break;
+
+            //Locked chest
+            case 5:
+                break;
+        }
+    }
+
+    public void showEvent() {
+
+    }
 }
