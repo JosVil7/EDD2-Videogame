@@ -72,7 +72,6 @@ public class PlayerController {
                                 gameController.moveRight();
                                 break;
                         }
-                        mainGame.repaint(); // Tell the mainGame to redraw the player
                     } catch (IOException ex) {
                         Logger.getLogger(PlayerController.class.getName()).log(Level.SEVERE, null, ex);
                     }

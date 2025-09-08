@@ -25,12 +25,9 @@ public class MainGameView extends javax.swing.JFrame {
         setIconImage(new ImageIcon(getClass().getResource("/images/tesoro1_icon.png")).getImage());
     }
 
-
     public JPanel getMapa() {
         return Mapa;
     }
-    
-    
 
     public void createButtons() throws IOException {
         for (int i = 0; i < 25; i++) {
@@ -270,34 +267,70 @@ public class MainGameView extends javax.swing.JFrame {
         img = img.getScaledInstance(100, 100, Image.SCALE_SMOOTH);
         tile.setIcon(new ImageIcon(img));
     }
+
     public void setPlayerBack(int playerPosition) throws IOException {
         JLabel tile = (JLabel) this.Mapa.getComponent(playerPosition);
         Image img = ImageIO.read(getClass().getResource("/images/tiles/back.png"));
         img = img.getScaledInstance(100, 100, Image.SCALE_SMOOTH);
         tile.setIcon(new ImageIcon(img));
     }
+
     public void setPlayerLeft(int playerPosition) throws IOException {
         JLabel tile = (JLabel) this.Mapa.getComponent(playerPosition);
         Image img = ImageIO.read(getClass().getResource("/images/tiles/left.png"));
         img = img.getScaledInstance(100, 100, Image.SCALE_SMOOTH);
         tile.setIcon(new ImageIcon(img));
     }
+
     public void setPlayerRight(int playerPosition) throws IOException {
         JLabel tile = (JLabel) this.Mapa.getComponent(playerPosition);
         Image img = ImageIO.read(getClass().getResource("/images/tiles/right.png"));
         img = img.getScaledInstance(100, 100, Image.SCALE_SMOOTH);
         tile.setIcon(new ImageIcon(img));
     }
+
     public void setTileChest(int playerPosition) throws IOException {
         JLabel tile = (JLabel) this.Mapa.getComponent(playerPosition);
         Image img = ImageIO.read(getClass().getResource("/images/tiles/chest.png"));
         img = img.getScaledInstance(100, 100, Image.SCALE_SMOOTH);
         tile.setIcon(new ImageIcon(img));
     }
+
     public void setTileEmpty(int playerPosition) throws IOException {
         JLabel tile = (JLabel) this.Mapa.getComponent(playerPosition);
         Image img = ImageIO.read(getClass().getResource("/images/tiles/empty.png"));
         img = img.getScaledInstance(100, 100, Image.SCALE_SMOOTH);
         tile.setIcon(new ImageIcon(img));
+    }
+
+    public void setTileBoss(int playerPosition) throws IOException {
+        JLabel tile = (JLabel) this.Mapa.getComponent(playerPosition);
+        Image img = ImageIO.read(getClass().getResource("/images/tiles/unexplored.png"));
+        img = img.getScaledInstance(100, 100, Image.SCALE_SMOOTH);
+        tile.setIcon(new ImageIcon(img));
+    }
+
+    public void setTilePortal(int playerPosition) throws IOException {
+        JLabel tile = (JLabel) this.Mapa.getComponent(playerPosition);
+        Image img = ImageIO.read(getClass().getResource("/images/tiles/unexplored.png"));
+        img = img.getScaledInstance(100, 100, Image.SCALE_SMOOTH);
+        tile.setIcon(new ImageIcon(img));
+    }
+
+    public void setTileTrap(int playerPosition) throws IOException {
+        JLabel tile = (JLabel) this.Mapa.getComponent(playerPosition);
+        Image img = ImageIO.read(getClass().getResource("/images/tiles/trap.png"));
+        img = img.getScaledInstance(100, 100, Image.SCALE_SMOOTH);
+        tile.setIcon(new ImageIcon(img));
+    }
+    public void setTileLocked(int playerPosition) throws IOException {
+        JLabel tile = (JLabel) this.Mapa.getComponent(playerPosition);
+        Image img = ImageIO.read(getClass().getResource("/images/tiles/locked.png"));
+        img = img.getScaledInstance(100, 100, Image.SCALE_SMOOTH);
+        tile.setIcon(new ImageIcon(img));
+    }
+
+    public void showEventChest(String message){
+        
     }
 }

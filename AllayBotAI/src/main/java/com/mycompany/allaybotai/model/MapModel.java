@@ -68,19 +68,22 @@ public class MapModel {
     }
 
     public int getX() {
-        for (int i = 0; i < gridSize; i++) {
-            for (int j = 0; j < gridSize; j++) {
+        for (int i = 0; i < 5; i++) {
+            for (int j = 0; j < 5; j++) {
                 if (playerMap[i][j] == -1) {
+
                     return i;
                 }
             }
         }
+                                                System.out.println(-1);
+
         return -1;
     }
 
     public int getY() {
-        for (int i = 0; i < gridSize; i++) {
-            for (int j = 0; j < gridSize; j++) {
+        for (int i = 0; i < 5; i++) {
+            for (int j = 0; j < 5; j++) {
                 if (playerMap[i][j] == -1) {
                     return j;
                 }
@@ -96,6 +99,10 @@ public class MapModel {
             return -map[i][j];
         }
         playerMap[i][j] = -1;
+        return map[i][j];
+    }
+    
+    public int getEventCode(int i, int j){
         return map[i][j];
     }
 

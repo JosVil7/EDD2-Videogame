@@ -90,37 +90,83 @@ public class GameController {
         if (this.map.getX() == 0) {
             //I can't move there panel
         } else {
-            int eventCode = this.map.exploreCell(this.map.getX() - 1, this.map.getY());
-            int position = (this.map.getX() - 1) * 5 + this.map.getY();
-            
-            this.mainGame.setPlayerBack(position);
-            
-            this.leaveCell(this.map.getX(), this.map.getY());
+            this.mainGame.setPlayerBack(this.map.getPlayerPosition() - 5);
+            int x = this.map.getX();
+            int y = this.map.getY();
+            this.leaveCell(x, y);
+            int eventCode = this.map.exploreCell((x - 1), y);
+            int position = this.map.getPlayerPosition();
+
             if (eventCode < 0) {
                 //We've already been here
             } else {
-
+                this.showEvent(eventCode);
             }
         }
     }
 
-    public void moveDown() {
-        throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
+    public void moveDown() throws IOException {
+        if (this.map.getX() == 4) {
+            //I can't move there panel
+        } else {
+            this.mainGame.setPlayerFront(this.map.getPlayerPosition() + 5);
+            int x = this.map.getX();
+            int y = this.map.getY();
+            this.leaveCell(x, y);
+            int eventCode = this.map.exploreCell((x + 1), y);
+            int position = this.map.getPlayerPosition();
+
+            if (eventCode < 0) {
+                //We've already been here
+            } else {
+                this.showEvent(eventCode);
+            }
+        }
     }
 
-    public void moveLeft() {
-        throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
+    public void moveLeft() throws IOException {
+        if (this.map.getY() == 0) {
+            //I can't move there panel
+        } else {
+            this.mainGame.setPlayerLeft(this.map.getPlayerPosition() -1);
+            int x = this.map.getX();
+            int y = this.map.getY();
+            this.leaveCell(x, y);
+            int eventCode = this.map.exploreCell(x , y-1);
+            int position = this.map.getPlayerPosition();
+
+            if (eventCode < 0) {
+                //We've already been here
+            } else {
+                this.showEvent(eventCode);
+            }
+        }
     }
 
-    public void moveRight() {
-        throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
+    public void moveRight() throws IOException {
+        if (this.map.getY() == 4) {
+            //I can't move there panel
+        } else {
+            this.mainGame.setPlayerRight(this.map.getPlayerPosition() +1);
+            int x = this.map.getX();
+            int y = this.map.getY();
+            this.leaveCell(x, y);
+            int eventCode = this.map.exploreCell(x , y+1);
+            int position = this.map.getPlayerPosition();
+
+            if (eventCode < 0) {
+                //We've already been here
+            } else {
+                this.showEvent(eventCode);
+            }
+        }
     }
 
     public void leaveCell(int i, int j) throws IOException {
-        int eventCode = this.map.exploreCell(i, j);
-        int position = i * 5 + j;
+        int eventCode = this.map.getEventCode(i, j);
+        int position = this.map.getPlayerPosition();
         this.map.leaveCell(i, j);
-        this.setTileInView(Math.abs(eventCode), position);
+        this.setTileInView(eventCode, position);
     }
 
     public void setTileInView(int eventCode, int position) throws IOException {
@@ -131,27 +177,32 @@ public class GameController {
                 break;
             //Boss
             case 1:
+                this.mainGame.setTileBoss(position);
                 break;
 
             //Portals
             case 2:
+                this.mainGame.setTilePortal(position);
                 break;
 
             //Traps
             case 3:
+                 this.mainGame.setTileTrap(position);
                 break;
 
             //Gem or chest
             case 4:
+                 this.mainGame.setTileChest(position);
                 break;
 
             //Locked chest
             case 5:
+                 this.mainGame.setTileLocked(position);
                 break;
         }
     }
 
-    public void showEvent() {
-
+    public void showEvent(int eventCode) {
+        
     }
 }
