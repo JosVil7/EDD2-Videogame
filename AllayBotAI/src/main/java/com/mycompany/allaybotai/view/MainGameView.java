@@ -22,6 +22,7 @@ public class MainGameView extends javax.swing.JFrame {
     public MainGameView(GameController controller) throws IOException {
         this.controller = controller;
         initComponents();
+        this.eventIcon.setIcon(new ImageIcon(getClass().getResource("/images/characterPortrait.gif")));
         setIconImage(new ImageIcon(getClass().getResource("/images/tesoro1_icon.png")).getImage());
     }
 
@@ -41,89 +42,13 @@ public class MainGameView extends javax.swing.JFrame {
 
     }
 
-//    private void explorarCelda(int fila, int columna) {
-//        jugadorFila = fila;
-//        jugadorColumna = columna;
-//
-//        // Actualizar la etiqueta con el número de la celda
-//        Posicion.setText("Celda: " + (fila * gridSize + columna + 1));
-//
-//        if (turnosRestantes <= 0) {
-//            JOptionPane.showMessageDialog(null, "¡No tienes más turnos! Fin del juego.");
-//            finalizarJuego();
-//            return;
-//        }
-//
-//        int celdaActual = mapa[fila][columna]; // Valor de la celda en el mapa
-//
-//        if (celdaActual == 1) { // Tesoro encontrado
-//            int decrementoms = 1;//para usar en la funcion recursiva
-//
-//            tesorosEncontrados = tesorosmas(tesorosEncontrados, decrementoms);//recursividad
-//            mapa[fila][columna] = 0; // Eliminar el tesoro del mapa
-//            JOptionPane.showMessageDialog(null, "¡Encontraste un tesoro!");
-//            Tesoros.setText("Tesoros encontrados: " + tesorosEncontrados);
-//            turnosRestantes = trampa(turnosRestantes, decrementoms);
-//            Turnos.setText("Turnos restantes: " + turnosRestantes);
-//
-//        } else if (celdaActual == -1) { // Trampa encontrada
-//            int decrementot = 2;// Decrementos para la funciones recursivas de los reductores de los turnos en las trampas
-//            int decrementom = 1;// Decrementoss para la funcion recursiva de los reductores de tesoros en la trampas
-//
-//            JOptionPane.showMessageDialog(null, "¡Pisas una trampa! Pierdes un turno");
-//            turnosRestantes = trampa(turnosRestantes, decrementot);
-//            Turnos.setText("Turnos restantes: " + turnosRestantes);
-//
-//            if (tesorosEncontrados > 0) {
-//                JOptionPane.showMessageDialog(null, "Pierdes un tesoro."); //para decontar los tesoros aparte
-//                tesorosEncontrados = tesorosmenos(tesorosEncontrados, decrementom);
-//                Tesoros.setText("Tesoros encontrados: " + tesorosEncontrados);
-//            }
-//
-//            if (turnosRestantes <= 0) {
-//                JOptionPane.showMessageDialog(null, "¡No tienes más turnos! Fin del juego.");
-//                finalizarJuego();
-//                return;
-//            }
-//
-//        } else { // Celda vacía
-//            int decrementosv = 1;
-//            JOptionPane.showMessageDialog(null, "Nada en esta celda.");
-//            turnosRestantes = trampa(turnosRestantes, decrementosv);//recursividad
-//            Turnos.setText("Turnos restantes: " + turnosRestantes);
-//        }
-//
-//        // Verificar si se han encontrado todos los tesoros
-//        if (tesorosEncontrados == 5) {
-//            JOptionPane.showMessageDialog(null, "¡Has encontrado todos los tesoros! ¡Ganaste!");
-//            finalizarJuego();
-//        }
-//    }
-    //Funcion recursiva para ir quitando turnos extra cuando caes en una trampa
-    private static int trampa(int turnosRestantes, int decremento) {
-        if (decremento <= 0) {
-            return turnosRestantes;
-        }
-        return trampa(turnosRestantes - 1, decremento - 1);
+    private void setEventIcon(String name) throws IOException{
+         Image img = ImageIO.read(getClass().getResource("/images/tiles/front.png"));
+        img = img.getScaledInstance(100, 100, Image.SCALE_SMOOTH);
+         this.eventIcon.setIcon(new ImageIcon(img));
     }
 
-    //Funcion recursiva para ir quitando los tesoros cuando caes en una trampa
-    private static int tesorosmenos(int tesorosEncontrados, int decrementosm) {
-        if (decrementosm <= 0) {
-            return tesorosEncontrados;
-        }
-        return tesorosmenos(tesorosEncontrados - 1, decrementosm - 1);
-    }
-
-    //Funcion recursiva para ir dando los tesoros cuando lso encuentras
-    private static int tesorosmas(int tesorosEncontrados, int decrementosms) {
-        if (decrementosms <= 0) {
-            return tesorosEncontrados;
-        }
-        return tesorosmenos(tesorosEncontrados + 1, decrementosms - 1);
-    }
-
-    private void finalizarJuego() {
+    private void endGame() {
         deshabilitarComponentes(0);
     }
 
@@ -147,6 +72,12 @@ public class MainGameView extends javax.swing.JFrame {
         jLabel4 = new javax.swing.JLabel();
         Posicion = new javax.swing.JLabel();
         Turnos = new javax.swing.JLabel();
+        eventPanel = new javax.swing.JPanel();
+        eventIcon = new javax.swing.JLabel();
+        eventText = new javax.swing.JLabel();
+        jButton1 = new javax.swing.JButton();
+        jButton2 = new javax.swing.JButton();
+        jButton3 = new javax.swing.JButton();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         setTitle("AllayQuest");
@@ -201,6 +132,34 @@ public class MainGameView extends javax.swing.JFrame {
         Turnos.setText("Turnos restantes: 25");
         Turnos.setToolTipText("");
 
+        eventPanel.setBackground(new java.awt.Color(51, 51, 51));
+        eventPanel.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(0, 0, 0)));
+        eventPanel.setMaximumSize(new java.awt.Dimension(250, 200));
+        eventPanel.setLayout(new java.awt.BorderLayout());
+
+        eventIcon.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
+        eventIcon.setIcon(new javax.swing.ImageIcon(getClass().getResource("/images/characterPortrait.gif"))); // NOI18N
+        eventIcon.setVerticalAlignment(javax.swing.SwingConstants.TOP);
+        eventIcon.setIconTextGap(0);
+        eventIcon.setMaximumSize(new java.awt.Dimension(200, 200));
+        eventIcon.setMinimumSize(new java.awt.Dimension(200, 200));
+        eventIcon.setName(""); // NOI18N
+        eventIcon.setPreferredSize(new java.awt.Dimension(200, 200));
+        eventPanel.add(eventIcon, java.awt.BorderLayout.NORTH);
+
+        eventText.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
+        eventText.setText("jLabel1");
+        eventPanel.add(eventText, java.awt.BorderLayout.CENTER);
+
+        jButton1.setText("jButton1");
+        eventPanel.add(jButton1, java.awt.BorderLayout.PAGE_END);
+
+        jButton2.setText("jButton2");
+        eventPanel.add(jButton2, java.awt.BorderLayout.LINE_END);
+
+        jButton3.setText("jButton3");
+        eventPanel.add(jButton3, java.awt.BorderLayout.LINE_START);
+
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
@@ -212,17 +171,20 @@ public class MainGameView extends javax.swing.JFrame {
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                             .addGroup(layout.createSequentialGroup()
                                 .addGap(235, 235, 235)
-                                .addComponent(Posicion, javax.swing.GroupLayout.PREFERRED_SIZE, 1, Short.MAX_VALUE))
-                            .addComponent(jLabel3, javax.swing.GroupLayout.PREFERRED_SIZE, 0, Short.MAX_VALUE))
-                        .addGap(143, 143, 143)
+                                .addComponent(Posicion, javax.swing.GroupLayout.PREFERRED_SIZE, 54, Short.MAX_VALUE)
+                                .addGap(143, 143, 143))
+                            .addGroup(layout.createSequentialGroup()
+                                .addComponent(jLabel3, javax.swing.GroupLayout.PREFERRED_SIZE, 380, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)))
                         .addComponent(Turnos, javax.swing.GroupLayout.PREFERRED_SIZE, 153, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                             .addComponent(Tesoros, javax.swing.GroupLayout.PREFERRED_SIZE, 400, javax.swing.GroupLayout.PREFERRED_SIZE)
                             .addComponent(Regresar, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))
                     .addGroup(layout.createSequentialGroup()
-                        .addGap(354, 354, 354)
-                        .addComponent(Mapa, javax.swing.GroupLayout.DEFAULT_SIZE, 584, Short.MAX_VALUE)))
+                        .addComponent(eventPanel, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                        .addComponent(Mapa, javax.swing.GroupLayout.DEFAULT_SIZE, 677, Short.MAX_VALUE)))
                 .addContainerGap())
         );
         layout.setVerticalGroup(
@@ -238,7 +200,11 @@ public class MainGameView extends javax.swing.JFrame {
                     .addComponent(Posicion, javax.swing.GroupLayout.PREFERRED_SIZE, 35, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(Turnos, javax.swing.GroupLayout.PREFERRED_SIZE, 33, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addGap(18, 18, 18)
-                .addComponent(Mapa, javax.swing.GroupLayout.DEFAULT_SIZE, 500, Short.MAX_VALUE)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(Mapa, javax.swing.GroupLayout.DEFAULT_SIZE, 500, Short.MAX_VALUE)
+                    .addGroup(layout.createSequentialGroup()
+                        .addGap(0, 0, Short.MAX_VALUE)
+                        .addComponent(eventPanel, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)))
                 .addContainerGap())
         );
 
@@ -257,6 +223,12 @@ public class MainGameView extends javax.swing.JFrame {
     private javax.swing.JPanel Regresar;
     private javax.swing.JLabel Tesoros;
     private javax.swing.JLabel Turnos;
+    private javax.swing.JLabel eventIcon;
+    private javax.swing.JPanel eventPanel;
+    private javax.swing.JLabel eventText;
+    private javax.swing.JButton jButton1;
+    private javax.swing.JButton jButton2;
+    private javax.swing.JButton jButton3;
     private javax.swing.JLabel jLabel3;
     private javax.swing.JLabel jLabel4;
     // End of variables declaration//GEN-END:variables
