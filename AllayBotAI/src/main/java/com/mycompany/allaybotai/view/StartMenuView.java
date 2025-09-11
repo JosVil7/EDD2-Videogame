@@ -22,7 +22,7 @@ public class StartMenuView extends javax.swing.JFrame {
     public StartMenuView(GameController controller) {
         this.controller = controller;
         initComponents();
-        setIconImage(new ImageIcon(getClass().getResource("/images/tesoro1_icon.png")).getImage());
+        setIconImage(new ImageIcon(getClass().getResource("/images/tiles/front.png")).getImage());
 
     }
 
@@ -47,39 +47,39 @@ public class StartMenuView extends javax.swing.JFrame {
 
         jPanel1.setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
 
-        jLabel1.setFont(new java.awt.Font("Rockwell Condensed", 3, 24)); // NOI18N
-        jLabel1.setForeground(new java.awt.Color(51, 51, 51));
-        jLabel1.setText("AllayQuest: ¡Busqueda de Tesoros!");
-        jPanel1.add(jLabel1, new org.netbeans.lib.awtextra.AbsoluteConstraints(280, 70, 400, -1));
+        jLabel1.setFont(new java.awt.Font("Rockwell Condensed", 3, 48)); // NOI18N
+        jLabel1.setForeground(new java.awt.Color(218, 246, 218));
+        jLabel1.setText("Guardians Of The Ancient Forest");
+        jPanel1.add(jLabel1, new org.netbeans.lib.awtextra.AbsoluteConstraints(60, 20, 730, 90));
 
-        BttnSalir.setBackground(new java.awt.Color(250, 162, 117));
-        BttnSalir.setFont(new java.awt.Font("Segoe UI", 1, 18)); // NOI18N
+        BttnSalir.setBackground(new java.awt.Color(45, 115, 50));
+        BttnSalir.setFont(new java.awt.Font("SansSerif", 3, 24)); // NOI18N
         BttnSalir.setForeground(new java.awt.Color(0, 0, 0));
-        BttnSalir.setText("Salir");
+        BttnSalir.setText("Exit");
         BttnSalir.setBorder(null);
         BttnSalir.addMouseListener(new java.awt.event.MouseAdapter() {
             public void mouseClicked(java.awt.event.MouseEvent evt) {
                 BttnSalirMouseClicked(evt);
             }
         });
-        jPanel1.add(BttnSalir, new org.netbeans.lib.awtextra.AbsoluteConstraints(640, 360, 90, 30));
+        jPanel1.add(BttnSalir, new org.netbeans.lib.awtextra.AbsoluteConstraints(60, 450, 150, 40));
 
-        BttnCreditos.setBackground(new java.awt.Color(198, 207, 187));
-        BttnCreditos.setFont(new java.awt.Font("Segoe UI", 1, 18)); // NOI18N
+        BttnCreditos.setBackground(new java.awt.Color(116, 170, 107));
+        BttnCreditos.setFont(new java.awt.Font("SansSerif", 3, 24)); // NOI18N
         BttnCreditos.setForeground(new java.awt.Color(0, 0, 0));
-        BttnCreditos.setText("Creditos");
+        BttnCreditos.setText("Credits");
         BttnCreditos.setBorder(null);
         BttnCreditos.addMouseListener(new java.awt.event.MouseAdapter() {
             public void mouseClicked(java.awt.event.MouseEvent evt) {
                 BttnCreditosMouseClicked(evt);
             }
         });
-        jPanel1.add(BttnCreditos, new org.netbeans.lib.awtextra.AbsoluteConstraints(410, 440, 90, 30));
+        jPanel1.add(BttnCreditos, new org.netbeans.lib.awtextra.AbsoluteConstraints(60, 290, 150, 140));
 
-        BttnJugar.setBackground(new java.awt.Color(231, 203, 152));
-        BttnJugar.setFont(new java.awt.Font("Segoe UI", 1, 18)); // NOI18N
+        BttnJugar.setBackground(new java.awt.Color(208, 212, 118));
+        BttnJugar.setFont(new java.awt.Font("SansSerif", 3, 24)); // NOI18N
         BttnJugar.setForeground(new java.awt.Color(0, 0, 0));
-        BttnJugar.setText("Jugar");
+        BttnJugar.setText("Play");
         BttnJugar.setBorder(null);
         BttnJugar.addMouseListener(new java.awt.event.MouseAdapter() {
             public void mouseClicked(java.awt.event.MouseEvent evt) {
@@ -91,16 +91,16 @@ public class StartMenuView extends javax.swing.JFrame {
                 BttnJugarActionPerformed(evt);
             }
         });
-        jPanel1.add(BttnJugar, new org.netbeans.lib.awtextra.AbsoluteConstraints(160, 360, 80, 30));
+        jPanel1.add(BttnJugar, new org.netbeans.lib.awtextra.AbsoluteConstraints(60, 130, 150, 140));
 
-        jLabel3.setIcon(new javax.swing.ImageIcon(getClass().getResource("/images/Busqueda_resized.gif"))); // NOI18N
+        jLabel3.setIcon(new javax.swing.ImageIcon(getClass().getResource("/images/startScreen.gif"))); // NOI18N
         jPanel1.add(jLabel3, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 0, 960, 530));
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addComponent(jPanel1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+            .addComponent(jPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)

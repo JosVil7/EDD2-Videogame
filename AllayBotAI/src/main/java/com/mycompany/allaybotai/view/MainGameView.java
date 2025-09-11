@@ -3,7 +3,7 @@ package com.mycompany.allaybotai.view;
 import com.mycompany.allaybotai.controller.GameController;
 import java.awt.Image;
 import java.io.IOException;
-import java.util.Random;
+import java.util.ArrayList;
 import javax.imageio.ImageIO;
 import javax.swing.ImageIcon;
 import javax.swing.JLabel;
@@ -12,26 +12,22 @@ import javax.swing.JPanel;
 public class MainGameView extends javax.swing.JFrame {
 
     private final GameController controller;
-    private int jugadorFila = 0;
-    private int jugadorColumna = 0;
     public int turnosRestantes = 25;
-
-    private int tesorosEncontrados = 0;
-    private final Random random = new Random();
+    private boolean chest = true;
 
     public MainGameView(GameController controller) throws IOException {
         this.controller = controller;
         initComponents();
         this.showEventNothing();
         this.eventIcon.setIcon(new ImageIcon(getClass().getResource("/images/characterPortrait.gif")));
-        setIconImage(new ImageIcon(getClass().getResource("/images/tesoro1_icon.png")).getImage());
+        setIconImage(new ImageIcon(getClass().getResource("/images/tiles/front.png")).getImage());
     }
 
     public JPanel getMapa() {
         return Mapa;
     }
 
-    public void createButtons() throws IOException {
+    public void createTiles() throws IOException {
         for (int i = 0; i < 25; i++) {
             JLabel tile = new JLabel();
             Image img = ImageIO.read(getClass().getResource("/images/tiles/unexplored.png"));
@@ -41,12 +37,6 @@ public class MainGameView extends javax.swing.JFrame {
             Mapa.add(tile);
         }
 
-    }
-
-    private void setEventIcon(String name) throws IOException {
-        Image img = ImageIO.read(getClass().getResource("/images/tiles/front.png"));
-        img = img.getScaledInstance(100, 100, Image.SCALE_SMOOTH);
-        this.eventIcon.setIcon(new ImageIcon(img));
     }
 
     private void endGame() {
@@ -74,17 +64,20 @@ public class MainGameView extends javax.swing.JFrame {
         eventIcon = new javax.swing.JLabel();
         labelSpeech = new javax.swing.JLabel();
         panelOptions = new javax.swing.JPanel();
-        panelButtonLesser = new javax.swing.JPanel();
+        panelButtonNo = new javax.swing.JPanel();
         labelLessValue = new javax.swing.JLabel();
-        panelButtonHigher = new javax.swing.JPanel();
+        panelButtonYes = new javax.swing.JPanel();
         labelHigherValue = new javax.swing.JLabel();
         panelContinue = new javax.swing.JPanel();
         labelContinue = new javax.swing.JLabel();
+        panelInventory = new javax.swing.JPanel();
+        labelInventory = new javax.swing.JLabel();
+        jScrollPane1 = new javax.swing.JScrollPane();
+        outputTextArea = new javax.swing.JTextArea();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         setTitle("Guardians Of The Ancient Forest");
         setMinimumSize(new java.awt.Dimension(700, 600));
-        setPreferredSize(new java.awt.Dimension(800, 700));
         setSize(new java.awt.Dimension(0, 0));
 
         Mapa.setBackground(new java.awt.Color(46, 125, 50));
@@ -94,7 +87,7 @@ public class MainGameView extends javax.swing.JFrame {
         Mapa.setLayout(new java.awt.GridLayout(5, 5));
 
         jLabel3.setFont(new java.awt.Font("Arial", 1, 36)); // NOI18N
-        jLabel3.setText("Chronicles of Allay");
+        jLabel3.setText("Guardians of The Ancient Forest");
 
         panelReturn.setBackground(new java.awt.Color(45, 45, 45));
         panelReturn.addMouseListener(new java.awt.event.MouseAdapter() {
@@ -148,29 +141,39 @@ public class MainGameView extends javax.swing.JFrame {
         panelOptions.setMinimumSize(new java.awt.Dimension(0, 110));
         panelOptions.setPreferredSize(new java.awt.Dimension(200, 100));
 
-        panelButtonLesser.setBackground(new java.awt.Color(51, 51, 51));
-        panelButtonLesser.setBorder(javax.swing.BorderFactory.createBevelBorder(javax.swing.border.BevelBorder.RAISED));
-        panelButtonLesser.setMinimumSize(new java.awt.Dimension(90, 75));
-        panelButtonLesser.setPreferredSize(new java.awt.Dimension(90, 75));
-        panelButtonLesser.setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
+        panelButtonNo.setBackground(new java.awt.Color(51, 51, 51));
+        panelButtonNo.setBorder(javax.swing.BorderFactory.createBevelBorder(javax.swing.border.BevelBorder.RAISED));
+        panelButtonNo.setMinimumSize(new java.awt.Dimension(90, 75));
+        panelButtonNo.setPreferredSize(new java.awt.Dimension(90, 75));
+        panelButtonNo.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                panelButtonNoMouseClicked(evt);
+            }
+        });
+        panelButtonNo.setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
 
         labelLessValue.setFont(new java.awt.Font("SansSerif", 1, 12)); // NOI18N
-        labelLessValue.setText("Lesser Value");
-        panelButtonLesser.add(labelLessValue, new org.netbeans.lib.awtextra.AbsoluteConstraints(10, 30, -1, -1));
+        labelLessValue.setText("No");
+        panelButtonNo.add(labelLessValue, new org.netbeans.lib.awtextra.AbsoluteConstraints(40, 30, -1, -1));
 
-        panelOptions.add(panelButtonLesser);
+        panelOptions.add(panelButtonNo);
 
-        panelButtonHigher.setBackground(new java.awt.Color(51, 51, 51));
-        panelButtonHigher.setBorder(javax.swing.BorderFactory.createBevelBorder(javax.swing.border.BevelBorder.RAISED));
-        panelButtonHigher.setMinimumSize(new java.awt.Dimension(90, 75));
-        panelButtonHigher.setPreferredSize(new java.awt.Dimension(90, 75));
-        panelButtonHigher.setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
+        panelButtonYes.setBackground(new java.awt.Color(51, 51, 51));
+        panelButtonYes.setBorder(javax.swing.BorderFactory.createBevelBorder(javax.swing.border.BevelBorder.RAISED));
+        panelButtonYes.setMinimumSize(new java.awt.Dimension(90, 75));
+        panelButtonYes.setPreferredSize(new java.awt.Dimension(90, 75));
+        panelButtonYes.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                panelButtonYesMouseClicked(evt);
+            }
+        });
+        panelButtonYes.setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
 
         labelHigherValue.setFont(new java.awt.Font("SansSerif", 1, 12)); // NOI18N
-        labelHigherValue.setText("Higher Value");
-        panelButtonHigher.add(labelHigherValue, new org.netbeans.lib.awtextra.AbsoluteConstraints(10, 30, -1, -1));
+        labelHigherValue.setText("Yes");
+        panelButtonYes.add(labelHigherValue, new org.netbeans.lib.awtextra.AbsoluteConstraints(30, 30, -1, -1));
 
-        panelOptions.add(panelButtonHigher);
+        panelOptions.add(panelButtonYes);
 
         eventPanel.add(panelOptions);
 
@@ -190,6 +193,20 @@ public class MainGameView extends javax.swing.JFrame {
 
         eventPanel.add(panelContinue);
 
+        panelInventory.setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
+
+        labelInventory.setFont(new java.awt.Font("SansSerif", 1, 15)); // NOI18N
+        labelInventory.setText("Inventory");
+        panelInventory.add(labelInventory, new org.netbeans.lib.awtextra.AbsoluteConstraints(40, 10, -1, -1));
+
+        outputTextArea.setEditable(false);
+        outputTextArea.setColumns(20);
+        outputTextArea.setRows(5);
+        outputTextArea.setFocusable(false);
+        jScrollPane1.setViewportView(outputTextArea);
+
+        panelInventory.add(jScrollPane1, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 40, 150, 460));
+
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
@@ -198,27 +215,30 @@ public class MainGameView extends javax.swing.JFrame {
                 .addContainerGap()
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(layout.createSequentialGroup()
-                        .addComponent(jLabel3, javax.swing.GroupLayout.PREFERRED_SIZE, 380, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 312, Short.MAX_VALUE)
-                        .addComponent(panelReturn, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                    .addGroup(layout.createSequentialGroup()
+                        .addComponent(panelInventory, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addComponent(eventPanel, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                        .addComponent(Mapa, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)))
+                        .addGap(18, 18, 18)
+                        .addComponent(Mapa, javax.swing.GroupLayout.DEFAULT_SIZE, 614, Short.MAX_VALUE))
+                    .addGroup(layout.createSequentialGroup()
+                        .addComponent(jLabel3, javax.swing.GroupLayout.PREFERRED_SIZE, 589, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                        .addComponent(panelReturn, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))
                 .addContainerGap())
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
+                .addContainerGap()
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(jLabel3)
-                    .addGroup(layout.createSequentialGroup()
-                        .addContainerGap()
-                        .addComponent(panelReturn, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                .addGap(18, 151, Short.MAX_VALUE)
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                    .addComponent(Mapa, javax.swing.GroupLayout.DEFAULT_SIZE, 500, Short.MAX_VALUE)
-                    .addComponent(eventPanel, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                    .addComponent(panelReturn, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(jLabel3))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 115, Short.MAX_VALUE)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                        .addComponent(Mapa, javax.swing.GroupLayout.DEFAULT_SIZE, 500, Short.MAX_VALUE)
+                        .addComponent(eventPanel, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                    .addComponent(panelInventory, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addContainerGap())
         );
 
@@ -232,8 +252,24 @@ public class MainGameView extends javax.swing.JFrame {
 
     private void panelContinueMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_panelContinueMouseClicked
         this.showEventNothing();
-        this.controller.setEnabled(true);
+        this.controller.setMovementEnabled(true);
     }//GEN-LAST:event_panelContinueMouseClicked
+
+    private void panelButtonNoMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_panelButtonNoMouseClicked
+        if (chest) {
+            this.controller.openChest(false);
+        } else {
+            this.controller.goPortal(true);
+        }
+    }//GEN-LAST:event_panelButtonNoMouseClicked
+
+    private void panelButtonYesMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_panelButtonYesMouseClicked
+              if (chest) {
+            this.controller.openChest(true);
+        } else {
+            this.controller.goPortal(true);
+        }
+    }//GEN-LAST:event_panelButtonYesMouseClicked
 
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
@@ -241,14 +277,18 @@ public class MainGameView extends javax.swing.JFrame {
     private javax.swing.JLabel eventIcon;
     private javax.swing.JPanel eventPanel;
     private javax.swing.JLabel jLabel3;
+    private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JLabel labelContinue;
     private javax.swing.JLabel labelHigherValue;
+    private javax.swing.JLabel labelInventory;
     private javax.swing.JLabel labelLessValue;
     private javax.swing.JLabel labelRegresar;
     private javax.swing.JLabel labelSpeech;
-    private javax.swing.JPanel panelButtonHigher;
-    private javax.swing.JPanel panelButtonLesser;
+    private javax.swing.JTextArea outputTextArea;
+    private javax.swing.JPanel panelButtonNo;
+    private javax.swing.JPanel panelButtonYes;
     private javax.swing.JPanel panelContinue;
+    private javax.swing.JPanel panelInventory;
     private javax.swing.JPanel panelOptions;
     private javax.swing.JPanel panelReturn;
     // End of variables declaration//GEN-END:variables
@@ -297,14 +337,14 @@ public class MainGameView extends javax.swing.JFrame {
 
     public void setTileBoss(int playerPosition) throws IOException {
         JLabel tile = (JLabel) this.Mapa.getComponent(playerPosition);
-        Image img = ImageIO.read(getClass().getResource("/images/tiles/unexplored.png"));
+        Image img = ImageIO.read(getClass().getResource("/images/tiles/boss.png"));
         img = img.getScaledInstance(100, 100, Image.SCALE_SMOOTH);
         tile.setIcon(new ImageIcon(img));
     }
 
     public void setTilePortal(int playerPosition) throws IOException {
         JLabel tile = (JLabel) this.Mapa.getComponent(playerPosition);
-        Image img = ImageIO.read(getClass().getResource("/images/tiles/unexplored.png"));
+        Image img = ImageIO.read(getClass().getResource("/images/tiles/portal.png"));
         img = img.getScaledInstance(100, 100, Image.SCALE_SMOOTH);
         tile.setIcon(new ImageIcon(img));
     }
@@ -326,25 +366,87 @@ public class MainGameView extends javax.swing.JFrame {
     private void showEventNothing() {
         this.labelSpeech.setText("<html><p>>Use WASD or</p>\n"
                 + "<p>the arrows to move.&nbsp;</p></html>");
-        this.panelButtonLesser.setVisible(false);
-        this.panelButtonHigher.setVisible(false);
-        this.panelContinue.setEnabled(false);
-        
+        this.panelButtonNo.setVisible(false);
+        this.panelButtonYes.setVisible(false);
+        this.eventIcon.setIcon(new ImageIcon(getClass().getResource("/images/characterPortrait.gif")));
+        this.panelContinue.setVisible(false);
+
     }
 
-    public void showEventAskForGem(String message) {
+    //Ask to open chest or not
+    public void showEventLockedChest(String message) {
         this.labelSpeech.setText(message);
-        this.panelButtonLesser.setVisible(true);
-        this.panelButtonHigher.setVisible(true);
-        this.panelContinue.setEnabled(false);
+        this.panelButtonNo.setVisible(true);
+        this.panelButtonYes.setVisible(true);
+        this.panelContinue.setVisible(false);
+        this.controller.setMovementEnabled(false);
+        this.chest = true;
+    }
+    
+    //Ask to go in portal or not
+        public void showEventPortal(String message) {
+        this.labelSpeech.setText(message);
+        this.panelButtonNo.setVisible(true);
+        this.panelButtonYes.setVisible(true);
+        this.panelContinue.setVisible(false);
+        this.controller.setMovementEnabled(false);
+        this.chest = false;
     }
 
     //Show a message
     public void showEventResponse(String message) {
         this.labelSpeech.setText(message);
-        this.panelButtonLesser.setVisible(false);
-        this.panelButtonHigher.setVisible(false);
-        this.panelContinue.setEnabled(true);
-        this.controller.setEnabled(false);
+        this.panelButtonNo.setVisible(false);
+        this.panelButtonYes.setVisible(false);
+        this.panelContinue.setVisible(true);
+        this.eventIcon.setIcon(new ImageIcon(getClass().getResource("/images/happyPortrait.gif")));
+        this.controller.setMovementEnabled(false);
+    }
+
+    //Trap
+    public void showEventTrap(String message) {
+        this.labelSpeech.setText(message);
+        this.panelButtonNo.setVisible(false);
+        this.panelButtonYes.setVisible(false);
+        this.panelContinue.setVisible(true);
+        this.eventIcon.setIcon(new ImageIcon(getClass().getResource("/images/trapPortrait.gif")));
+        this.controller.setMovementEnabled(false);
+    }
+
+    //Boss
+    public void showEventBoss(String message) {
+        this.labelSpeech.setText(message);
+        this.panelButtonNo.setVisible(false);
+        this.panelButtonYes.setVisible(false);
+        this.panelContinue.setVisible(true);
+        this.eventIcon.setIcon(new ImageIcon(getClass().getResource("/images/scaredPortrait.gif")));
+        this.controller.setMovementEnabled(false);
+    }
+
+    //No chest option 
+    public void showEventNoChest(String message) {
+        this.labelSpeech.setText(message);
+        this.panelButtonNo.setVisible(false);
+        this.panelButtonYes.setVisible(false);
+        this.panelContinue.setVisible(true);
+        this.eventIcon.setIcon(new ImageIcon(getClass().getResource("/images/sadPortrait.gif")));
+        this.controller.setMovementEnabled(false);
+    }
+
+    //We've already been here
+    public void showEventTileAlreadyExplored(String message) {
+        this.labelSpeech.setText(message);
+        this.panelButtonNo.setVisible(false);
+        this.panelButtonYes.setVisible(false);
+        this.panelContinue.setVisible(false);
+        this.controller.setMovementEnabled(true);
+    }
+
+    //Update inventory method
+    public void updateInventory(ArrayList<String> list) {
+        this.outputTextArea.setText("");
+        for (String gemName : list) {
+            outputTextArea.append(gemName + "\n");
+        }
     }
 }

@@ -1,4 +1,6 @@
+com\mycompany\allaybotai\model\ArbolBST.class
 com\mycompany\allaybotai\controller\PlayerController$1.class
+com\mycompany\allaybotai\model\GemModel.class
 com\mycompany\allaybotai\view\StartMenuView$1.class
 com\mycompany\allaybotai\view\StartMenuView$4.class
 com\mycompany\allaybotai\view\StartMenuView.class
@@ -11,5 +13,7 @@ com\mycompany\allaybotai\view\MainGameView$1.class
 com\mycompany\allaybotai\view\MainGameView.class
 com\mycompany\allaybotai\controller\GameController.class
 com\mycompany\allaybotai\model\MapModel.class
+com\mycompany\allaybotai\model\Nodo.class
 com\mycompany\allaybotai\view\StartMenuView$2.class
+com\mycompany\allaybotai\view\MainGameView$2.class
 com\mycompany\allaybotai\main\Main.class

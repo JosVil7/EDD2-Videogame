@@ -18,13 +18,12 @@ public class CreditsView extends javax.swing.JFrame {
     /**
      * Creates new form Creditos
      */
-    
     //Controller
     private final GameController controller;
 
     public CreditsView(GameController controller) {
         this.controller = controller;
-        
+
         //Removes tittle bar and borders
         this.setUndecorated(true);
 
@@ -43,7 +42,7 @@ public class CreditsView extends javax.swing.JFrame {
                 controller.goToStartMenu(view);
             }
         });
-        setIconImage(new ImageIcon(getClass().getResource("/images/tesoro1_icon.png")).getImage());
+        setIconImage(new ImageIcon(getClass().getResource("/images/tiles/front.png")).getImage());
     }
 
     /**
@@ -59,8 +58,6 @@ public class CreditsView extends javax.swing.JFrame {
         txtCreditos = new javax.swing.JLabel();
         txtNombre1 = new javax.swing.JLabel();
         txtNombre2 = new javax.swing.JLabel();
-        txtNombre3 = new javax.swing.JLabel();
-        txtAtentamente = new javax.swing.JLabel();
         btnStartMenu = new javax.swing.JButton();
         imgFondo = new javax.swing.JLabel();
 
@@ -72,47 +69,37 @@ public class CreditsView extends javax.swing.JFrame {
 
         txtCreditos.setFont(new java.awt.Font("Segoe UI", 3, 36)); // NOI18N
         txtCreditos.setForeground(new java.awt.Color(0, 0, 0));
-        txtCreditos.setText("Creditos");
-        jPanel1.add(txtCreditos, new org.netbeans.lib.awtextra.AbsoluteConstraints(190, 40, -1, -1));
+        txtCreditos.setText("Credits");
+        jPanel1.add(txtCreditos, new org.netbeans.lib.awtextra.AbsoluteConstraints(30, 70, -1, -1));
 
         txtNombre1.setFont(new java.awt.Font("Segoe UI", 3, 18)); // NOI18N
         txtNombre1.setForeground(new java.awt.Color(0, 0, 0));
-        txtNombre1.setText("Ricardo Valencia");
-        jPanel1.add(txtNombre1, new org.netbeans.lib.awtextra.AbsoluteConstraints(160, 110, -1, -1));
+        txtNombre1.setText("Angélica Baños");
+        jPanel1.add(txtNombre1, new org.netbeans.lib.awtextra.AbsoluteConstraints(30, 180, -1, -1));
 
         txtNombre2.setFont(new java.awt.Font("Segoe UI", 3, 18)); // NOI18N
         txtNombre2.setForeground(new java.awt.Color(0, 0, 0));
         txtNombre2.setText("Jose Villa");
-        jPanel1.add(txtNombre2, new org.netbeans.lib.awtextra.AbsoluteConstraints(160, 140, -1, -1));
-
-        txtNombre3.setFont(new java.awt.Font("Segoe UI", 3, 18)); // NOI18N
-        txtNombre3.setForeground(new java.awt.Color(0, 0, 0));
-        txtNombre3.setText("Ismael Viloria");
-        jPanel1.add(txtNombre3, new org.netbeans.lib.awtextra.AbsoluteConstraints(160, 170, -1, -1));
-
-        txtAtentamente.setFont(new java.awt.Font("Segoe UI", 3, 12)); // NOI18N
-        txtAtentamente.setForeground(new java.awt.Color(0, 0, 0));
-        txtAtentamente.setText("Att: Con amor para la estimada.");
-        jPanel1.add(txtAtentamente, new org.netbeans.lib.awtextra.AbsoluteConstraints(40, 360, -1, -1));
+        jPanel1.add(txtNombre2, new org.netbeans.lib.awtextra.AbsoluteConstraints(30, 150, -1, -1));
 
         btnStartMenu.setBackground(new java.awt.Color(204, 255, 255));
         btnStartMenu.setForeground(new java.awt.Color(0, 0, 0));
-        btnStartMenu.setText("Menu Principal");
+        btnStartMenu.setText("Main Menu");
         btnStartMenu.addMouseListener(new java.awt.event.MouseAdapter() {
             public void mouseClicked(java.awt.event.MouseEvent evt) {
                 btnStartMenuMouseClicked(evt);
             }
         });
-        jPanel1.add(btnStartMenu, new org.netbeans.lib.awtextra.AbsoluteConstraints(410, 420, -1, -1));
+        jPanel1.add(btnStartMenu, new org.netbeans.lib.awtextra.AbsoluteConstraints(10, 410, -1, -1));
 
-        imgFondo.setIcon(new javax.swing.ImageIcon(getClass().getResource("/images/descarga_resized.gif"))); // NOI18N
+        imgFondo.setIcon(new javax.swing.ImageIcon(getClass().getResource("/images/credits.png"))); // NOI18N
         jPanel1.add(imgFondo, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 0, 530, 450));
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addComponent(jPanel1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+            .addComponent(jPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, 528, javax.swing.GroupLayout.PREFERRED_SIZE)
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -166,10 +153,8 @@ public class CreditsView extends javax.swing.JFrame {
     private javax.swing.JButton btnStartMenu;
     private javax.swing.JLabel imgFondo;
     private javax.swing.JPanel jPanel1;
-    private javax.swing.JLabel txtAtentamente;
     private javax.swing.JLabel txtCreditos;
     private javax.swing.JLabel txtNombre1;
     private javax.swing.JLabel txtNombre2;
-    private javax.swing.JLabel txtNombre3;
     // End of variables declaration//GEN-END:variables
 }

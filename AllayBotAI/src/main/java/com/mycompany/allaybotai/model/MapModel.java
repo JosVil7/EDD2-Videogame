@@ -71,13 +71,10 @@ public class MapModel {
         for (int i = 0; i < 5; i++) {
             for (int j = 0; j < 5; j++) {
                 if (playerMap[i][j] == -1) {
-
                     return i;
                 }
             }
         }
-                                                System.out.println(-1);
-
         return -1;
     }
 
@@ -98,6 +95,7 @@ public class MapModel {
             playerMap[i][j] = -1;
             return -map[i][j];
         }
+        //If not simply change position and send the normal code
         playerMap[i][j] = -1;
         return map[i][j];
     }
@@ -108,5 +106,16 @@ public class MapModel {
 
     public void leaveCell(int i, int j) {
         playerMap[i][j] = 1;
+    }
+    
+    public int getOtherPortal(int x, int y){
+         for (int i = 0; i < 5; i++) {
+            for (int j = 0; j < 5; j++) {
+                if (map[i][j] == 2 && i !=x && j != y) {
+                    return i * 5 + j;
+                }
+            }
+        }
+        return -1;
     }
 }

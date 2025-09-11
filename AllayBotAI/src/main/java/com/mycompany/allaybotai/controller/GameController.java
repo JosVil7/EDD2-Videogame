@@ -5,11 +5,14 @@
 package com.mycompany.allaybotai.controller;
 
 import com.formdev.flatlaf.themes.FlatMacDarkLaf;
+import com.mycompany.allaybotai.model.GemModel;
 import com.mycompany.allaybotai.model.MapModel;
 import com.mycompany.allaybotai.view.CreditsView;
 import com.mycompany.allaybotai.view.MainGameView;
 import com.mycompany.allaybotai.view.StartMenuView;
 import java.io.IOException;
+import java.util.ArrayList;
+import java.util.Random;
 import javax.swing.UIManager;
 
 /**
@@ -18,9 +21,10 @@ import javax.swing.UIManager;
  */
 public class GameController {
 
-    MainGameView mainGame;
-    PlayerController playerController;
-    MapModel map;
+    private MainGameView mainGame;
+    private PlayerController playerController;
+    private MapModel map;
+    private GemModel gemManager;
 
     //Main method
     public GameController() {
@@ -63,7 +67,10 @@ public class GameController {
         try {
             this.mainGame = new MainGameView(this);
             frame.dispose();
-            this.beginGame(); //Game BEGUNNN
+
+            this.gemManager = new GemModel(this);//New gemModel
+            this.beginGame(); //Begin the map logic
+
             mainGame.setVisible(true);
             return true;
         } catch (Exception e) {
@@ -73,12 +80,12 @@ public class GameController {
 
     //Map Logic
     private void beginGame() throws IOException {
+        //New player controller
         this.playerController = new PlayerController(this, this.mainGame);
+        //New map and tiles
         this.generateMap();
-        this.mainGame.createButtons();
-        if (this.map.getPlayerPosition() == -1) {
-            System.out.println("Player not found, WORRY");
-        }
+        this.mainGame.createTiles();
+        //Set player sprite
         this.mainGame.setPlayerFront(this.map.getPlayerPosition());
     }
 
@@ -95,13 +102,12 @@ public class GameController {
             int y = this.map.getY();
             this.leaveCell(x, y);
             int eventCode = this.map.exploreCell((x - 1), y);
-            int position = this.map.getPlayerPosition();
 
             if (eventCode < 0) {
-                this.mainGame.showEventResponse("<html><p>&gt;We've already been here!</p></html>");
+                this.mainGame.showEventTileAlreadyExplored("<html><p>&gt;We've already been here!</p></html>");
             } else {
                 if (eventCode != 0) {
-                    this.showEvent(eventCode);
+                    this.doEvent(eventCode, (x - 1), y);
                 }
             }
         }
@@ -116,12 +122,11 @@ public class GameController {
             int y = this.map.getY();
             this.leaveCell(x, y);
             int eventCode = this.map.exploreCell((x + 1), y);
-            int position = this.map.getPlayerPosition();
             if (eventCode < 0) {
-                this.mainGame.showEventResponse("<html><p>&gt;We've already been here!</p></html>");
+                this.mainGame.showEventTileAlreadyExplored("<html><p>&gt;We've already been here!</p></html>");
             } else {
                 if (eventCode != 0) {
-                    this.showEvent(eventCode);
+                    this.doEvent(eventCode, (x + 1), y);
                 }
             }
         }
@@ -136,13 +141,12 @@ public class GameController {
             int y = this.map.getY();
             this.leaveCell(x, y);
             int eventCode = this.map.exploreCell(x, y - 1);
-            int position = this.map.getPlayerPosition();
 
             if (eventCode < 0) {
-                this.mainGame.showEventResponse("<html><p>&gt;We've already been here!</p></html>");
+                this.mainGame.showEventTileAlreadyExplored("<html><p>&gt;We've already been here!</p></html>");
             } else {
                 if (eventCode != 0) {
-                    this.showEvent(eventCode);
+                    this.doEvent(eventCode, x, y - 1);
                 }
             }
         }
@@ -157,13 +161,12 @@ public class GameController {
             int y = this.map.getY();
             this.leaveCell(x, y);
             int eventCode = this.map.exploreCell(x, y + 1);
-            int position = this.map.getPlayerPosition();
 
             if (eventCode < 0) {
-                this.mainGame.showEventResponse("<html><p>&gt;We've already been here!</p></html>");
+                this.mainGame.showEventTileAlreadyExplored("<html><p>&gt;We've already been here!</p></html>");
             } else {
                 if (eventCode != 0) {
-                    this.showEvent(eventCode);
+                    this.doEvent(eventCode, x, y + 1);
                 }
             }
         }
@@ -173,10 +176,11 @@ public class GameController {
         int eventCode = this.map.getEventCode(i, j);
         int position = this.map.getPlayerPosition();
         this.map.leaveCell(i, j);
-        this.setTileInView(eventCode, position);
+        this.setTileInView(eventCode, position, i, j);
     }
 
-    public void setTileInView(int eventCode, int position) throws IOException {
+    //Handles showing what is within the tile on the view after leaving the cell, does NOT perform any action
+    public void setTileInView(int eventCode, int position, int x, int y) throws IOException {
         switch (eventCode) {
             //Empty
             case 0:
@@ -209,11 +213,112 @@ public class GameController {
         }
     }
 
-    public void showEvent(int eventCode) {
-        System.out.println("Huh");
+    public void doEvent(int eventCode, int x, int y) {
+        String gemName, message;
+        switch (eventCode) {
+            //Empty
+            case 0 -> {
+            }
+
+            //Boss
+            case 1 -> {
+                Random random = new Random();
+                int value = random.nextInt(1, 151);
+                gemName = this.gemManager.gemLostValue(value);
+                if (gemName.equals("")) {
+                    message = "<html><p>&gt; An ogre has appeared!</p><p>&gt; I don't even have gems...</p><p>&gt; It seems it took pity on me</p></html>";
+                    this.mainGame.showEventTileAlreadyExplored(message);
+                } else {
+                    message = "<html><p>&gt; An ogre has appeared!</p><p>&gt; It wants a gem of value </p>" + value + "<p>&gt; I gave him the </p>" + gemName + "</html>";
+                    this.mainGame.showEventBoss(message);
+
+                }
+            }
+
+            //Portal
+            case 2 -> {
+                message = "<html><p>&gt; This magic portal is aking for something...</p> <p>&gt; Should I sacrifice my </p> <p>   highest  gem to go in it? </p></html>";
+                this.mainGame.showEventPortal(message);
+            }
+
+            //Trap
+            case 3 -> {
+                if (this.gemManager.gemLost()) {
+                    message = "<html><p>&gt; A wild rabbit has attacked me!</p><p>&gt; It seems I lost a random gem...</p></html>";
+                } else {
+                    message = "<html><p>&gt; A wild rabbit has attacked me!</p><p>&gt; I don't even have gems...</p></html>";
+                }
+                this.mainGame.showEventTrap(message);
+            }
+
+            //Gem/Chest
+            case 4 -> {
+                gemName = this.gemManager.newGemCollected(x, y);
+                message = "<html><p>&gt; I've found a gem!</p> <p>&gt; " + gemName + " added to the inventory</p></html>";
+                this.mainGame.showEventResponse(message);
+            }
+
+            //Locked chest
+            case 5 -> {
+                message = "<html><p>&gt; I found a locked chest!</p> <p>&gt; Should I sacrifice my </p> <p>   lowest gem to open it? </p></html>";
+                this.mainGame.showEventLockedChest(message);
+            }
+        }
     }
 
-    public void setEnabled(boolean enabled) {
+    public void setMovementEnabled(boolean enabled) {
         playerController.setEnabled(enabled);
     }
-}
+
+    public void updateInventory(ArrayList<String> list) {
+        this.mainGame.updateInventory(list);
+    }
+
+    public void openChest(boolean answer) {
+        String gemName, message;
+        if (answer) {
+            if (this.gemManager.gemLostMinimum()) {
+                gemName = this.gemManager.newGemCollected(this.map.getX(), this.map.getY());
+                gemName = gemName + " and " + this.gemManager.newGemCollected(this.map.getX(), this.map.getY());
+                message = "<html><p>&gt; I've got a gem!</p> <p>&gt; " + gemName + " added to the inventory</p><p>&gt; This was worth it</p></html>";
+                this.mainGame.showEventResponse(message);
+            } else {
+                message = "<html><p>I don't have anything on me...</p></html>";
+                this.mainGame.showEventNoChest(message);
+            }
+        } else {
+            message = "<html><p>&gt; Guess I'll never know...</p></html>";
+            this.mainGame.showEventNoChest(message);
+        }
+    }
+
+    public void goPortal(boolean answer) {
+        String gemName, message;
+        if (answer) {
+            if (this.gemManager.gemLostMaximum()) {
+                //Change position logic
+                //Position of the other portal
+                this.mainGame.setPlayerFront(this.map.getPlayerPosition() + 1);
+                int x = this.map.getX();
+                int y = this.map.getY();
+                this.leaveCell(x, y);
+                int eventCode = this.map.exploreCell(x, y + 1);
+
+                if (eventCode < 0) {
+                    this.mainGame.showEventTileAlreadyExplored("<html><p>&gt;We've already been here!</p></html>");
+                } else {
+                    if (eventCode != 0) {
+                        this.doEvent(eventCode, x, y + 1);
+                    }
+                    //Message
+                    this.mainGame.showEventResponse(message);
+                }else {
+                message = "<html><p>I don't have anything on me...</p></html>";
+                this.mainGame.showEventNoChest(message);
+            }
+            } else {
+                message = "<html><p>&gt; I didn't need it...</p></html>";
+                this.mainGame.showEventNoChest(message);
+            }
+        }
+    }

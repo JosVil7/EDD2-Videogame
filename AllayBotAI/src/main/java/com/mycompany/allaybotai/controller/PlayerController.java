@@ -62,18 +62,10 @@ public class PlayerController {
                 if (this.enabled) {
                     try {
                         switch (direction) {
-                            case "up":
-                                gameController.moveUp();
-                                break;
-                            case "down":
-                                gameController.moveDown();
-                                break;
-                            case "left":
-                                gameController.moveLeft();
-                                break;
-                            case "right":
-                                gameController.moveRight();
-                                break;
+                            case "up" -> gameController.moveUp();
+                            case "down" -> gameController.moveDown();
+                            case "left" -> gameController.moveLeft();
+                            case "right" -> gameController.moveRight();
                         }
 
                     } catch (IOException ex) {
