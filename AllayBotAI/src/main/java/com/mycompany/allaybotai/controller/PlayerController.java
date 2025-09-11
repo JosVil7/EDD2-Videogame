@@ -22,41 +22,44 @@ import javax.swing.KeyStroke;
  */
 public class PlayerController {
 
+    private boolean enabled;
     private final GameController gameController;
     private final MainGameView mainGame;
 
     public PlayerController(GameController gameController, MainGameView mainGame) {
         this.gameController = gameController;
         this.mainGame = mainGame;
+        this.enabled = true;
         this.setupKeyBindings();
     }
 
-  private void setupKeyBindings() {
-            // Get the InputMap and ActionMap for the mainGame
-            InputMap inputMap = mainGame.getMapa().getInputMap(JComponent.WHEN_IN_FOCUSED_WINDOW);
-            ActionMap actionMap = mainGame.getMapa().getActionMap();
+    private void setupKeyBindings() {
+        // Get the InputMap and ActionMap for the mainGame
+        InputMap inputMap = mainGame.getMapa().getInputMap(JComponent.WHEN_IN_FOCUSED_WINDOW);
+        ActionMap actionMap = mainGame.getMapa().getActionMap();
 
-            // Bind the keys to string names
-            inputMap.put(KeyStroke.getKeyStroke("W"), "moveUp");
-            inputMap.put(KeyStroke.getKeyStroke("UP"), "moveUp");
-            inputMap.put(KeyStroke.getKeyStroke("S"), "moveDown");
-            inputMap.put(KeyStroke.getKeyStroke("DOWN"), "moveDown");
-            inputMap.put(KeyStroke.getKeyStroke("A"), "moveLeft");
-            inputMap.put(KeyStroke.getKeyStroke("LEFT"), "moveLeft");
-            inputMap.put(KeyStroke.getKeyStroke("D"), "moveRight");
-            inputMap.put(KeyStroke.getKeyStroke("RIGHT"), "moveRight");
+        // Bind the keys to string names
+        inputMap.put(KeyStroke.getKeyStroke("W"), "moveUp");
+        inputMap.put(KeyStroke.getKeyStroke("UP"), "moveUp");
+        inputMap.put(KeyStroke.getKeyStroke("S"), "moveDown");
+        inputMap.put(KeyStroke.getKeyStroke("DOWN"), "moveDown");
+        inputMap.put(KeyStroke.getKeyStroke("A"), "moveLeft");
+        inputMap.put(KeyStroke.getKeyStroke("LEFT"), "moveLeft");
+        inputMap.put(KeyStroke.getKeyStroke("D"), "moveRight");
+        inputMap.put(KeyStroke.getKeyStroke("RIGHT"), "moveRight");
 
-            // Bind the names to the actual actions
-            actionMap.put("moveUp", createMoveAction("up"));
-            actionMap.put("moveDown", createMoveAction("down"));
-            actionMap.put("moveLeft", createMoveAction("left"));
-            actionMap.put("moveRight", createMoveAction("right"));
-        }
+        // Bind the names to the actual actions
+        actionMap.put("moveUp", createMoveAction("up"));
+        actionMap.put("moveDown", createMoveAction("down"));
+        actionMap.put("moveLeft", createMoveAction("left"));
+        actionMap.put("moveRight", createMoveAction("right"));
+    }
 
-        private Action createMoveAction(String direction) {
-            return new AbstractAction() {
-                @Override
-                public void actionPerformed(ActionEvent e) {
+    private Action createMoveAction(String direction) {
+        return new AbstractAction() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                if (this.enabled) {
                     try {
                         switch (direction) {
                             case "up":
@@ -72,11 +75,19 @@ public class PlayerController {
                                 gameController.moveRight();
                                 break;
                         }
+
                     } catch (IOException ex) {
                         Logger.getLogger(PlayerController.class.getName()).log(Level.SEVERE, null, ex);
                     }
                 }
-            };
-        }
+            }
+        };
+    }
 
+    public void setEnabled(boolean enabled) {
+        mainGame.getMapa().getActionMap().get("moveUp").setEnabled(enabled);
+        mainGame.getMapa().getActionMap().get("moveDown").setEnabled(enabled);
+        mainGame.getMapa().getActionMap().get("moveLeft").setEnabled(enabled);
+        mainGame.getMapa().getActionMap().get("moveRight").setEnabled(enabled);
+    }
 }

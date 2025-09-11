@@ -98,9 +98,11 @@ public class GameController {
             int position = this.map.getPlayerPosition();
 
             if (eventCode < 0) {
-                //We've already been here
+                this.mainGame.showEventResponse("<html><p>&gt;We've already been here!</p></html>");
             } else {
-                this.showEvent(eventCode);
+                if (eventCode != 0) {
+                    this.showEvent(eventCode);
+                }
             }
         }
     }
@@ -115,11 +117,12 @@ public class GameController {
             this.leaveCell(x, y);
             int eventCode = this.map.exploreCell((x + 1), y);
             int position = this.map.getPlayerPosition();
-
             if (eventCode < 0) {
-                //We've already been here
+                this.mainGame.showEventResponse("<html><p>&gt;We've already been here!</p></html>");
             } else {
-                this.showEvent(eventCode);
+                if (eventCode != 0) {
+                    this.showEvent(eventCode);
+                }
             }
         }
     }
@@ -128,17 +131,19 @@ public class GameController {
         if (this.map.getY() == 0) {
             //I can't move there panel
         } else {
-            this.mainGame.setPlayerLeft(this.map.getPlayerPosition() -1);
+            this.mainGame.setPlayerLeft(this.map.getPlayerPosition() - 1);
             int x = this.map.getX();
             int y = this.map.getY();
             this.leaveCell(x, y);
-            int eventCode = this.map.exploreCell(x , y-1);
+            int eventCode = this.map.exploreCell(x, y - 1);
             int position = this.map.getPlayerPosition();
 
             if (eventCode < 0) {
-                //We've already been here
+                this.mainGame.showEventResponse("<html><p>&gt;We've already been here!</p></html>");
             } else {
-                this.showEvent(eventCode);
+                if (eventCode != 0) {
+                    this.showEvent(eventCode);
+                }
             }
         }
     }
@@ -147,17 +152,19 @@ public class GameController {
         if (this.map.getY() == 4) {
             //I can't move there panel
         } else {
-            this.mainGame.setPlayerRight(this.map.getPlayerPosition() +1);
+            this.mainGame.setPlayerRight(this.map.getPlayerPosition() + 1);
             int x = this.map.getX();
             int y = this.map.getY();
             this.leaveCell(x, y);
-            int eventCode = this.map.exploreCell(x , y+1);
+            int eventCode = this.map.exploreCell(x, y + 1);
             int position = this.map.getPlayerPosition();
 
             if (eventCode < 0) {
-                //We've already been here
+                this.mainGame.showEventResponse("<html><p>&gt;We've already been here!</p></html>");
             } else {
-                this.showEvent(eventCode);
+                if (eventCode != 0) {
+                    this.showEvent(eventCode);
+                }
             }
         }
     }
@@ -187,22 +194,26 @@ public class GameController {
 
             //Traps
             case 3:
-                 this.mainGame.setTileTrap(position);
+                this.mainGame.setTileTrap(position);
                 break;
 
             //Gem or chest
             case 4:
-                 this.mainGame.setTileChest(position);
+                this.mainGame.setTileChest(position);
                 break;
 
             //Locked chest
             case 5:
-                 this.mainGame.setTileLocked(position);
+                this.mainGame.setTileLocked(position);
                 break;
         }
     }
 
     public void showEvent(int eventCode) {
-        
+        System.out.println("Huh");
+    }
+
+    public void setEnabled(boolean enabled) {
+        playerController.setEnabled(enabled);
     }
 }
