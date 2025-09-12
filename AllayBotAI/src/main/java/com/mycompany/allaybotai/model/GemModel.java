@@ -71,7 +71,7 @@ public class GemModel {
     }
 
     public boolean gemLostMinimum() {
-        if (!numbersUsed.isEmpty()) {
+        if (this.arbol.root!=null) {
             this.arbol.eliminarNodo(arbol.root, arbol.minimo().poder);
             gameController.updateInventory(arbol.inOrden());
             return true;
@@ -91,7 +91,7 @@ public class GemModel {
     }
 
     public boolean gemLostMaximum() {
-        if (!numbersUsed.isEmpty()) {
+        if (this.arbol.root!=null) {
             this.arbol.eliminarNodo(arbol.root, arbol.maximo().poder);
             gameController.updateInventory(arbol.inOrden());
             return true;

@@ -237,7 +237,7 @@ public class GameController {
 
             //Portal
             case 2 -> {
-                message = "<html><p>&gt; This magic portal is aking for something...</p> <p>&gt; Should I sacrifice my </p> <p>   highest  gem to go in it? </p></html>";
+                message = "<html><p>&gt; This magic portal is asking for something...</p> <p>&gt; Should I sacrifice my </p> <p>   highest  gem to go in it? </p></html>";
                 this.mainGame.showEventPortal(message);
             }
 
@@ -292,33 +292,30 @@ public class GameController {
         }
     }
 
-    public void goPortal(boolean answer) {
+    public void goPortal(boolean answer) throws IOException {
         String gemName, message;
         if (answer) {
             if (this.gemManager.gemLostMaximum()) {
                 //Change position logic
                 //Position of the other portal
-                this.mainGame.setPlayerFront(this.map.getPlayerPosition() + 1);
                 int x = this.map.getX();
                 int y = this.map.getY();
                 this.leaveCell(x, y);
-                int eventCode = this.map.exploreCell(x, y + 1);
-
-                if (eventCode < 0) {
-                    this.mainGame.showEventTileAlreadyExplored("<html><p>&gt;We've already been here!</p></html>");
-                } else {
-                    if (eventCode != 0) {
-                        this.doEvent(eventCode, x, y + 1);
-                    }
-                    //Message
-                    this.mainGame.showEventResponse(message);
-                }else {
+                int xFinal = this.map.getOtherPortalX(x, y);
+                int yFinal = this.map.getOtherPortalY(x, y);
+                int positionView = this.map.getOtherPortalPosition(x, y);
+                this.map.exploreCell(xFinal, yFinal);
+                this.mainGame.setPlayerFront(positionView);
+                message = "<html><p>&gt; I've moved to [</p>" + xFinal + ", " + yFinal + "]</html>";
+                //Message
+                this.mainGame.showEventResponse(message);
+            } else {
                 message = "<html><p>I don't have anything on me...</p></html>";
                 this.mainGame.showEventNoChest(message);
             }
-            } else {
-                message = "<html><p>&gt; I didn't need it...</p></html>";
-                this.mainGame.showEventNoChest(message);
-            }
+        } else {
+            message = "<html><p>&gt; I didn't need it...</p></html>";
+            this.mainGame.showEventNoChest(message);
         }
     }
+}

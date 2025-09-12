@@ -108,11 +108,31 @@ public class MapModel {
         playerMap[i][j] = 1;
     }
     
-    public int getOtherPortal(int x, int y){
+    public int getOtherPortalPosition(int x, int y){
          for (int i = 0; i < 5; i++) {
             for (int j = 0; j < 5; j++) {
-                if (map[i][j] == 2 && i !=x && j != y) {
+                if (map[i][j] == 2 && (i !=x || j != y)) {
                     return i * 5 + j;
+                }
+            }
+        }
+        return -1;
+    }
+    public int getOtherPortalX(int x, int y){
+         for (int i = 0; i < 5; i++) {
+            for (int j = 0; j < 5; j++) {
+                if (map[i][j] == 2 && (i !=x || j != y)) {
+                    return i;
+                }
+            }
+        }
+        return -1;
+    }
+    public int getOtherPortalY(int x, int y){
+         for (int i = 0; i < 5; i++) {
+            for (int j = 0; j < 5; j++) {
+                if (map[i][j] == 2 && (i !=x || j != y)) {
+                    return j;
                 }
             }
         }

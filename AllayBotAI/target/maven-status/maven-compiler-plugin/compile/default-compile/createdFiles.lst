@@ -8,11 +8,13 @@ com\mycompany\allaybotai\view\CreditsView$2.class
 com\mycompany\allaybotai\view\CreditsView.class
 com\mycompany\allaybotai\view\StartMenuView$3.class
 com\mycompany\allaybotai\controller\PlayerController.class
+com\mycompany\allaybotai\view\MainGameView$4.class
 com\mycompany\allaybotai\view\CreditsView$1.class
 com\mycompany\allaybotai\view\MainGameView$1.class
 com\mycompany\allaybotai\view\MainGameView.class
 com\mycompany\allaybotai\controller\GameController.class
 com\mycompany\allaybotai\model\MapModel.class
+com\mycompany\allaybotai\view\MainGameView$3.class
 com\mycompany\allaybotai\model\Nodo.class
 com\mycompany\allaybotai\view\StartMenuView$2.class
 com\mycompany\allaybotai\view\MainGameView$2.class

@@ -4,6 +4,8 @@ import com.mycompany.allaybotai.controller.GameController;
 import java.awt.Image;
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javax.imageio.ImageIO;
 import javax.swing.ImageIcon;
 import javax.swing.JLabel;
@@ -81,6 +83,7 @@ public class MainGameView extends javax.swing.JFrame {
         setSize(new java.awt.Dimension(0, 0));
 
         Mapa.setBackground(new java.awt.Color(46, 125, 50));
+        Mapa.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(27, 74, 29)));
         Mapa.setMaximumSize(new java.awt.Dimension(400, 400));
         Mapa.setMinimumSize(new java.awt.Dimension(250, 250));
         Mapa.setPreferredSize(new java.awt.Dimension(400, 400));
@@ -116,7 +119,7 @@ public class MainGameView extends javax.swing.JFrame {
                 .addContainerGap())
         );
 
-        eventPanel.setBackground(new java.awt.Color(51, 51, 51));
+        eventPanel.setBackground(new java.awt.Color(43, 25, 37));
         eventPanel.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(0, 0, 0)));
         eventPanel.setMaximumSize(new java.awt.Dimension(250, 200));
         eventPanel.setMinimumSize(new java.awt.Dimension(200, 200));
@@ -137,7 +140,7 @@ public class MainGameView extends javax.swing.JFrame {
         labelSpeech.setVerticalTextPosition(javax.swing.SwingConstants.TOP);
         eventPanel.add(labelSpeech);
 
-        panelOptions.setBackground(new java.awt.Color(51, 51, 51));
+        panelOptions.setBackground(new java.awt.Color(43, 25, 37));
         panelOptions.setMinimumSize(new java.awt.Dimension(0, 110));
         panelOptions.setPreferredSize(new java.awt.Dimension(200, 100));
 
@@ -193,6 +196,7 @@ public class MainGameView extends javax.swing.JFrame {
 
         eventPanel.add(panelContinue);
 
+        panelInventory.setBackground(new java.awt.Color(43, 25, 37));
         panelInventory.setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
 
         labelInventory.setFont(new java.awt.Font("SansSerif", 1, 15)); // NOI18N
@@ -200,6 +204,7 @@ public class MainGameView extends javax.swing.JFrame {
         panelInventory.add(labelInventory, new org.netbeans.lib.awtextra.AbsoluteConstraints(40, 10, -1, -1));
 
         outputTextArea.setEditable(false);
+        outputTextArea.setBackground(new java.awt.Color(240, 159, 113));
         outputTextArea.setColumns(20);
         outputTextArea.setRows(5);
         outputTextArea.setFocusable(false);
@@ -259,15 +264,23 @@ public class MainGameView extends javax.swing.JFrame {
         if (chest) {
             this.controller.openChest(false);
         } else {
-            this.controller.goPortal(true);
+            try {
+                this.controller.goPortal(false);
+            } catch (IOException ex) {
+                Logger.getLogger(MainGameView.class.getName()).log(Level.SEVERE, null, ex);
+            }
         }
     }//GEN-LAST:event_panelButtonNoMouseClicked
 
     private void panelButtonYesMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_panelButtonYesMouseClicked
-              if (chest) {
+        if (chest) {
             this.controller.openChest(true);
         } else {
-            this.controller.goPortal(true);
+            try {
+                this.controller.goPortal(true);
+            } catch (IOException ex) {
+                Logger.getLogger(MainGameView.class.getName()).log(Level.SEVERE, null, ex);
+            }
         }
     }//GEN-LAST:event_panelButtonYesMouseClicked
 
@@ -382,9 +395,9 @@ public class MainGameView extends javax.swing.JFrame {
         this.controller.setMovementEnabled(false);
         this.chest = true;
     }
-    
+
     //Ask to go in portal or not
-        public void showEventPortal(String message) {
+    public void showEventPortal(String message) {
         this.labelSpeech.setText(message);
         this.panelButtonNo.setVisible(true);
         this.panelButtonYes.setVisible(true);

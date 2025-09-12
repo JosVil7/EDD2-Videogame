@@ -198,40 +198,41 @@ public class ArbolBST {
         return nodo;
     }
 
-public Nodo eliminarCercano(int poder) {
-    Nodo nodoExistente = this.Encontrar(poder);
+    public Nodo eliminarCercano(int poder) {
+        // Find the closest node to the given 'poder' value.
+        Nodo current = root;
+        Nodo closest = null;
+        int minDiff = Integer.MAX_VALUE;
 
-    if (nodoExistente != null) {
-        this.eliminar(poder);
-        return nodoExistente;
-    }
+        while (current != null) {
+            int currentDiff = Math.abs(poder - current.poder);
 
-    Nodo predecesorNodo = this.predecesor(new Nodo("temp", poder, 0, 0));
-    Nodo sucesorNodo = this.sucesor(new Nodo("temp", poder, 0, 0));
+            // If the current node is closer than the previously found closest node
+            if (currentDiff < minDiff) {
+                minDiff = currentDiff;
+                closest = current;
+            } else if (currentDiff == minDiff) {
+                // Tie-breaker: choose the smaller value
+                if (current.poder < closest.poder) {
+                    closest = current;
+                }
+            }
 
-    if (predecesorNodo == null && sucesorNodo == null) {
-        return null; 
-    }
-
-    if (predecesorNodo != null && sucesorNodo != null) {
-        int diffPredecesor = Math.abs(poder - predecesorNodo.poder);
-        int diffSucesor = Math.abs(poder - sucesorNodo.poder);
-
-        if (diffPredecesor <= diffSucesor) {
-            this.eliminar(predecesorNodo.poder);
-            return predecesorNodo;
-        } else {
-            this.eliminar(sucesorNodo.poder);
-            return sucesorNodo;
+            if (poder < current.poder) {
+                current = current.izq;
+            } else if (poder > current.poder) {
+                current = current.der;
+            } else {
+                // Found an exact match, which is the closest possible.
+                break;
+            }
         }
-    } else if (predecesorNodo != null) {
 
-        this.eliminar(predecesorNodo.poder);
-        return predecesorNodo;
-    } else { 
-        this.eliminar(sucesorNodo.poder);
-        return sucesorNodo;
+        if (closest != null) {
+            this.eliminar(closest.poder);
+        }
+
+        return closest;
     }
-}
 
 }
