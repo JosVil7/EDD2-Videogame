@@ -243,7 +243,7 @@ public class GameController {
 
             //Trap
             case 3 -> {
-                if (this.gemManager.gemLost()) {
+                if (this.gemManager.gemRandomLost()) {
                     message = "<html><p>&gt; A wild rabbit has attacked me!</p><p>&gt; It seems I lost a random gem...</p></html>";
                 } else {
                     message = "<html><p>&gt; A wild rabbit has attacked me!</p><p>&gt; I don't even have gems...</p></html>";
@@ -293,20 +293,23 @@ public class GameController {
     }
 
     public void goPortal(boolean answer) throws IOException {
-        String gemName, message;
+        String message;
         if (answer) {
             if (this.gemManager.gemLostMaximum()) {
-                //Change position logic
-                //Position of the other portal
+                //Get current position
                 int x = this.map.getX();
                 int y = this.map.getY();
+                //Leave current cell
                 this.leaveCell(x, y);
+                //Find the other portal coords in X nad Y
                 int xFinal = this.map.getOtherPortalX(x, y);
                 int yFinal = this.map.getOtherPortalY(x, y);
+                //Get the other portal position for the view
                 int positionView = this.map.getOtherPortalPosition(x, y);
+                //Set player position to the other portal
                 this.map.exploreCell(xFinal, yFinal);
                 this.mainGame.setPlayerFront(positionView);
-                message = "<html><p>&gt; I've moved to [</p>" + xFinal + ", " + yFinal + "]</html>";
+                message = "<html><p>&gt; I've moved to [" + (xFinal +1) + ", " + (yFinal+1) + "]</p></html>";
                 //Message
                 this.mainGame.showEventResponse(message);
             } else {

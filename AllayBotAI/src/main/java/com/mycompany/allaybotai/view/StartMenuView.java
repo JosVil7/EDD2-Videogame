@@ -54,7 +54,7 @@ public class StartMenuView extends javax.swing.JFrame {
 
         BttnSalir.setBackground(new java.awt.Color(45, 115, 50));
         BttnSalir.setFont(new java.awt.Font("SansSerif", 3, 24)); // NOI18N
-        BttnSalir.setForeground(new java.awt.Color(0, 0, 0));
+        BttnSalir.setForeground(new java.awt.Color(0, 51, 51));
         BttnSalir.setText("Exit");
         BttnSalir.setBorder(null);
         BttnSalir.addMouseListener(new java.awt.event.MouseAdapter() {
@@ -66,7 +66,7 @@ public class StartMenuView extends javax.swing.JFrame {
 
         BttnCreditos.setBackground(new java.awt.Color(116, 170, 107));
         BttnCreditos.setFont(new java.awt.Font("SansSerif", 3, 24)); // NOI18N
-        BttnCreditos.setForeground(new java.awt.Color(0, 0, 0));
+        BttnCreditos.setForeground(new java.awt.Color(0, 51, 51));
         BttnCreditos.setText("Credits");
         BttnCreditos.setBorder(null);
         BttnCreditos.addMouseListener(new java.awt.event.MouseAdapter() {
@@ -78,7 +78,7 @@ public class StartMenuView extends javax.swing.JFrame {
 
         BttnJugar.setBackground(new java.awt.Color(208, 212, 118));
         BttnJugar.setFont(new java.awt.Font("SansSerif", 3, 24)); // NOI18N
-        BttnJugar.setForeground(new java.awt.Color(0, 0, 0));
+        BttnJugar.setForeground(new java.awt.Color(0, 51, 51));
         BttnJugar.setText("Play");
         BttnJugar.setBorder(null);
         BttnJugar.addMouseListener(new java.awt.event.MouseAdapter() {

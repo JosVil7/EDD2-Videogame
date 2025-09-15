@@ -59,10 +59,12 @@ public class GemModel {
         return gemName;
     }
 
-    public boolean gemLost() {
+    public boolean gemRandomLost() {
         //Delete a random node of a random power used 
         if (!numbersUsed.isEmpty()) {
-            this.arbol.eliminar(this.numbersUsed.get(random.nextInt(numbersUsed.size())));
+            int index = random.nextInt(numbersUsed.size());
+            this.arbol.eliminar(this.numbersUsed.get(index));
+            this.numbersUsed.remove(index);
             gameController.updateInventory(arbol.inOrden());
             return true;
         } else {
@@ -71,8 +73,10 @@ public class GemModel {
     }
 
     public boolean gemLostMinimum() {
-        if (this.arbol.root!=null) {
-            this.arbol.eliminarNodo(arbol.root, arbol.minimo().poder);
+        if (this.arbol.root != null) {
+            int index = this.numbersUsed.indexOf(arbol.minimo().poder);
+            this.arbol.eliminar(arbol.minimo().poder);
+            this.numbersUsed.remove(index);
             gameController.updateInventory(arbol.inOrden());
             return true;
         } else {
@@ -85,14 +89,16 @@ public class GemModel {
         Nodo deleted = this.arbol.eliminarCercano(value);
         if (deleted != null) {
             gemDeleted = deleted.nombre + " of value " + deleted.poder;
+            int index = this.numbersUsed.indexOf(deleted.poder);
+            this.numbersUsed.remove(index);
         }
         gameController.updateInventory(arbol.inOrden());
         return gemDeleted;
     }
 
     public boolean gemLostMaximum() {
-        if (this.arbol.root!=null) {
-            this.arbol.eliminarNodo(arbol.root, arbol.maximo().poder);
+        if (this.arbol.root != null) {
+            this.arbol.eliminar(arbol.maximo().poder);
             gameController.updateInventory(arbol.inOrden());
             return true;
         } else {

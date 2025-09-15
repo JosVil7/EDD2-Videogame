@@ -58,10 +58,15 @@ public class MainGameView extends javax.swing.JFrame {
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
 
-        Mapa = new javax.swing.JPanel();
+        mainPanel = new javax.swing.JPanel();
         jLabel3 = new javax.swing.JLabel();
         panelReturn = new javax.swing.JPanel();
         labelRegresar = new javax.swing.JLabel();
+        Mapa = new javax.swing.JPanel();
+        panelInventory = new javax.swing.JPanel();
+        labelInventory = new javax.swing.JLabel();
+        jScrollPane1 = new javax.swing.JScrollPane();
+        outputTextArea = new javax.swing.JTextArea();
         eventPanel = new javax.swing.JPanel();
         eventIcon = new javax.swing.JLabel();
         labelSpeech = new javax.swing.JLabel();
@@ -72,34 +77,26 @@ public class MainGameView extends javax.swing.JFrame {
         labelHigherValue = new javax.swing.JLabel();
         panelContinue = new javax.swing.JPanel();
         labelContinue = new javax.swing.JLabel();
-        panelInventory = new javax.swing.JPanel();
-        labelInventory = new javax.swing.JLabel();
-        jScrollPane1 = new javax.swing.JScrollPane();
-        outputTextArea = new javax.swing.JTextArea();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         setTitle("Guardians Of The Ancient Forest");
         setMinimumSize(new java.awt.Dimension(700, 600));
         setSize(new java.awt.Dimension(0, 0));
 
-        Mapa.setBackground(new java.awt.Color(46, 125, 50));
-        Mapa.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(27, 74, 29)));
-        Mapa.setMaximumSize(new java.awt.Dimension(400, 400));
-        Mapa.setMinimumSize(new java.awt.Dimension(250, 250));
-        Mapa.setPreferredSize(new java.awt.Dimension(400, 400));
-        Mapa.setLayout(new java.awt.GridLayout(5, 5));
+        mainPanel.setBackground(new java.awt.Color(26, 92, 74));
+        mainPanel.setMinimumSize(new java.awt.Dimension(700, 600));
 
-        jLabel3.setFont(new java.awt.Font("Arial", 1, 36)); // NOI18N
+        jLabel3.setFont(new java.awt.Font("SansSerif", 3, 36)); // NOI18N
         jLabel3.setText("Guardians of The Ancient Forest");
 
-        panelReturn.setBackground(new java.awt.Color(45, 45, 45));
+        panelReturn.setBackground(new java.awt.Color(5, 51, 36));
         panelReturn.addMouseListener(new java.awt.event.MouseAdapter() {
             public void mouseClicked(java.awt.event.MouseEvent evt) {
                 panelReturnMouseClicked(evt);
             }
         });
 
-        labelRegresar.setFont(new java.awt.Font("sansserif", 1, 14)); // NOI18N
+        labelRegresar.setFont(new java.awt.Font("sansserif", 3, 18)); // NOI18N
         labelRegresar.setText("Return");
 
         javax.swing.GroupLayout panelReturnLayout = new javax.swing.GroupLayout(panelReturn);
@@ -107,21 +104,42 @@ public class MainGameView extends javax.swing.JFrame {
         panelReturnLayout.setHorizontalGroup(
             panelReturnLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, panelReturnLayout.createSequentialGroup()
-                .addContainerGap(24, Short.MAX_VALUE)
+                .addContainerGap(26, Short.MAX_VALUE)
                 .addComponent(labelRegresar)
-                .addGap(24, 24, 24))
+                .addGap(22, 22, 22))
         );
         panelReturnLayout.setVerticalGroup(
             panelReturnLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, panelReturnLayout.createSequentialGroup()
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+            .addGroup(panelReturnLayout.createSequentialGroup()
+                .addContainerGap()
                 .addComponent(labelRegresar)
-                .addContainerGap())
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
 
-        eventPanel.setBackground(new java.awt.Color(43, 25, 37));
+        Mapa.setBackground(new java.awt.Color(46, 125, 50));
+        Mapa.setBorder(new javax.swing.border.LineBorder(new java.awt.Color(1, 28, 19), 10, true));
+        Mapa.setMinimumSize(new java.awt.Dimension(250, 250));
+        Mapa.setLayout(new java.awt.GridLayout(5, 5));
+
+        panelInventory.setBackground(new java.awt.Color(5, 51, 36));
+        panelInventory.setBorder(new javax.swing.border.LineBorder(new java.awt.Color(1, 28, 19), 5, true));
+        panelInventory.setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
+
+        labelInventory.setFont(new java.awt.Font("SansSerif", 3, 18)); // NOI18N
+        labelInventory.setText("Inventory");
+        panelInventory.add(labelInventory, new org.netbeans.lib.awtextra.AbsoluteConstraints(30, 10, -1, -1));
+
+        outputTextArea.setEditable(false);
+        outputTextArea.setBackground(new java.awt.Color(1, 28, 19));
+        outputTextArea.setColumns(1);
+        outputTextArea.setRows(5);
+        outputTextArea.setFocusable(false);
+        jScrollPane1.setViewportView(outputTextArea);
+
+        panelInventory.add(jScrollPane1, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 40, 150, 460));
+
+        eventPanel.setBackground(new java.awt.Color(5, 51, 36));
         eventPanel.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(0, 0, 0)));
-        eventPanel.setMaximumSize(new java.awt.Dimension(250, 200));
         eventPanel.setMinimumSize(new java.awt.Dimension(200, 200));
         eventPanel.setPreferredSize(new java.awt.Dimension(200, 200));
         eventPanel.setLayout(new javax.swing.BoxLayout(eventPanel, javax.swing.BoxLayout.Y_AXIS));
@@ -133,6 +151,7 @@ public class MainGameView extends javax.swing.JFrame {
         eventIcon.setName(""); // NOI18N
         eventPanel.add(eventIcon);
 
+        labelSpeech.setFont(new java.awt.Font("SansSerif", 3, 14)); // NOI18N
         labelSpeech.setText("if you can read this you're cooked");
         labelSpeech.setFocusable(false);
         labelSpeech.setMaximumSize(new java.awt.Dimension(200, 100));
@@ -140,11 +159,11 @@ public class MainGameView extends javax.swing.JFrame {
         labelSpeech.setVerticalTextPosition(javax.swing.SwingConstants.TOP);
         eventPanel.add(labelSpeech);
 
-        panelOptions.setBackground(new java.awt.Color(43, 25, 37));
+        panelOptions.setBackground(new java.awt.Color(5, 51, 36));
         panelOptions.setMinimumSize(new java.awt.Dimension(0, 110));
         panelOptions.setPreferredSize(new java.awt.Dimension(200, 100));
 
-        panelButtonNo.setBackground(new java.awt.Color(51, 51, 51));
+        panelButtonNo.setBackground(new java.awt.Color(1, 28, 19));
         panelButtonNo.setBorder(javax.swing.BorderFactory.createBevelBorder(javax.swing.border.BevelBorder.RAISED));
         panelButtonNo.setMinimumSize(new java.awt.Dimension(90, 75));
         panelButtonNo.setPreferredSize(new java.awt.Dimension(90, 75));
@@ -155,13 +174,13 @@ public class MainGameView extends javax.swing.JFrame {
         });
         panelButtonNo.setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
 
-        labelLessValue.setFont(new java.awt.Font("SansSerif", 1, 12)); // NOI18N
+        labelLessValue.setFont(new java.awt.Font("SansSerif", 3, 24)); // NOI18N
         labelLessValue.setText("No");
-        panelButtonNo.add(labelLessValue, new org.netbeans.lib.awtextra.AbsoluteConstraints(40, 30, -1, -1));
+        panelButtonNo.add(labelLessValue, new org.netbeans.lib.awtextra.AbsoluteConstraints(20, 20, -1, -1));
 
         panelOptions.add(panelButtonNo);
 
-        panelButtonYes.setBackground(new java.awt.Color(51, 51, 51));
+        panelButtonYes.setBackground(new java.awt.Color(1, 28, 19));
         panelButtonYes.setBorder(javax.swing.BorderFactory.createBevelBorder(javax.swing.border.BevelBorder.RAISED));
         panelButtonYes.setMinimumSize(new java.awt.Dimension(90, 75));
         panelButtonYes.setPreferredSize(new java.awt.Dimension(90, 75));
@@ -172,15 +191,15 @@ public class MainGameView extends javax.swing.JFrame {
         });
         panelButtonYes.setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
 
-        labelHigherValue.setFont(new java.awt.Font("SansSerif", 1, 12)); // NOI18N
+        labelHigherValue.setFont(new java.awt.Font("SansSerif", 3, 24)); // NOI18N
         labelHigherValue.setText("Yes");
-        panelButtonYes.add(labelHigherValue, new org.netbeans.lib.awtextra.AbsoluteConstraints(30, 30, -1, -1));
+        panelButtonYes.add(labelHigherValue, new org.netbeans.lib.awtextra.AbsoluteConstraints(20, 20, -1, -1));
 
         panelOptions.add(panelButtonYes);
 
         eventPanel.add(panelOptions);
 
-        panelContinue.setBackground(new java.awt.Color(51, 51, 51));
+        panelContinue.setBackground(new java.awt.Color(1, 28, 19));
         panelContinue.setBorder(javax.swing.BorderFactory.createBevelBorder(javax.swing.border.BevelBorder.RAISED));
         panelContinue.setPreferredSize(new java.awt.Dimension(200, 137));
         panelContinue.addMouseListener(new java.awt.event.MouseAdapter() {
@@ -190,62 +209,47 @@ public class MainGameView extends javax.swing.JFrame {
         });
         panelContinue.setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
 
-        labelContinue.setFont(new java.awt.Font("SansSerif", 1, 14)); // NOI18N
+        labelContinue.setFont(new java.awt.Font("SansSerif", 3, 24)); // NOI18N
         labelContinue.setText("Continue");
-        panelContinue.add(labelContinue, new org.netbeans.lib.awtextra.AbsoluteConstraints(60, 50, -1, -1));
+        panelContinue.add(labelContinue, new org.netbeans.lib.awtextra.AbsoluteConstraints(50, 40, -1, -1));
 
         eventPanel.add(panelContinue);
 
-        panelInventory.setBackground(new java.awt.Color(43, 25, 37));
-        panelInventory.setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
-
-        labelInventory.setFont(new java.awt.Font("SansSerif", 1, 15)); // NOI18N
-        labelInventory.setText("Inventory");
-        panelInventory.add(labelInventory, new org.netbeans.lib.awtextra.AbsoluteConstraints(40, 10, -1, -1));
-
-        outputTextArea.setEditable(false);
-        outputTextArea.setBackground(new java.awt.Color(240, 159, 113));
-        outputTextArea.setColumns(20);
-        outputTextArea.setRows(5);
-        outputTextArea.setFocusable(false);
-        jScrollPane1.setViewportView(outputTextArea);
-
-        panelInventory.add(jScrollPane1, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 40, 150, 460));
-
-        javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
-        getContentPane().setLayout(layout);
-        layout.setHorizontalGroup(
-            layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(layout.createSequentialGroup()
+        javax.swing.GroupLayout mainPanelLayout = new javax.swing.GroupLayout(mainPanel);
+        mainPanel.setLayout(mainPanelLayout);
+        mainPanelLayout.setHorizontalGroup(
+            mainPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, mainPanelLayout.createSequentialGroup()
+                .addComponent(jLabel3, javax.swing.GroupLayout.PREFERRED_SIZE, 589, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 226, Short.MAX_VALUE)
+                .addComponent(panelReturn, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, mainPanelLayout.createSequentialGroup()
                 .addContainerGap()
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addGroup(layout.createSequentialGroup()
-                        .addComponent(panelInventory, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(eventPanel, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addGap(18, 18, 18)
-                        .addComponent(Mapa, javax.swing.GroupLayout.DEFAULT_SIZE, 614, Short.MAX_VALUE))
-                    .addGroup(layout.createSequentialGroup()
-                        .addComponent(jLabel3, javax.swing.GroupLayout.PREFERRED_SIZE, 589, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                        .addComponent(panelReturn, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                .addComponent(panelInventory, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(5, 5, 5)
+                .addComponent(eventPanel, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(Mapa, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                 .addContainerGap())
         );
-        layout.setVerticalGroup(
-            layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
-                .addContainerGap()
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(panelReturn, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(jLabel3))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 115, Short.MAX_VALUE)
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                        .addComponent(Mapa, javax.swing.GroupLayout.DEFAULT_SIZE, 500, Short.MAX_VALUE)
-                        .addComponent(eventPanel, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
-                    .addComponent(panelInventory, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+        mainPanelLayout.setVerticalGroup(
+            mainPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(mainPanelLayout.createSequentialGroup()
+                .addGroup(mainPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(jLabel3)
+                    .addComponent(panelReturn, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addGap(27, 27, 27)
+                .addGroup(mainPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(Mapa, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addGroup(mainPanelLayout.createSequentialGroup()
+                        .addGap(0, 20, Short.MAX_VALUE)
+                        .addGroup(mainPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(panelInventory, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(eventPanel, javax.swing.GroupLayout.PREFERRED_SIZE, 500, javax.swing.GroupLayout.PREFERRED_SIZE))))
                 .addContainerGap())
         );
+
+        getContentPane().add(mainPanel, java.awt.BorderLayout.CENTER);
 
         pack();
         setLocationRelativeTo(null);
@@ -297,6 +301,7 @@ public class MainGameView extends javax.swing.JFrame {
     private javax.swing.JLabel labelLessValue;
     private javax.swing.JLabel labelRegresar;
     private javax.swing.JLabel labelSpeech;
+    private javax.swing.JPanel mainPanel;
     private javax.swing.JTextArea outputTextArea;
     private javax.swing.JPanel panelButtonNo;
     private javax.swing.JPanel panelButtonYes;
