@@ -2,6 +2,9 @@ package com.mycompany.allaybotai.view;
 
 import com.mycompany.allaybotai.controller.GameController;
 import java.awt.Image;
+import java.io.BufferedReader;
+import java.io.FileReader;
+import java.io.FileWriter;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.logging.Level;
@@ -9,7 +12,9 @@ import java.util.logging.Logger;
 import javax.imageio.ImageIO;
 import javax.swing.ImageIcon;
 import javax.swing.JLabel;
+import javax.swing.JOptionPane;
 import javax.swing.JPanel;
+import javax.swing.JTextArea;
 
 public class MainGameView extends javax.swing.JFrame {
 
@@ -77,6 +82,8 @@ public class MainGameView extends javax.swing.JFrame {
         labelHigherValue = new javax.swing.JLabel();
         panelContinue = new javax.swing.JPanel();
         labelContinue = new javax.swing.JLabel();
+        Save = new javax.swing.JPanel();
+        labelHigherValue1 = new javax.swing.JLabel();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         setTitle("Guardians Of The Ancient Forest");
@@ -215,13 +222,30 @@ public class MainGameView extends javax.swing.JFrame {
 
         eventPanel.add(panelContinue);
 
+        Save.setBackground(new java.awt.Color(1, 28, 19));
+        Save.setBorder(javax.swing.BorderFactory.createBevelBorder(javax.swing.border.BevelBorder.RAISED));
+        Save.setMinimumSize(new java.awt.Dimension(90, 75));
+        Save.setPreferredSize(new java.awt.Dimension(90, 75));
+        Save.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                SaveMouseClicked(evt);
+            }
+        });
+        Save.setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
+
+        labelHigherValue1.setFont(new java.awt.Font("SansSerif", 3, 24)); // NOI18N
+        labelHigherValue1.setText("Save");
+        Save.add(labelHigherValue1, new org.netbeans.lib.awtextra.AbsoluteConstraints(10, 0, -1, -1));
+
         javax.swing.GroupLayout mainPanelLayout = new javax.swing.GroupLayout(mainPanel);
         mainPanel.setLayout(mainPanelLayout);
         mainPanelLayout.setHorizontalGroup(
             mainPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, mainPanelLayout.createSequentialGroup()
                 .addComponent(jLabel3, javax.swing.GroupLayout.PREFERRED_SIZE, 589, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 226, Short.MAX_VALUE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 76, Short.MAX_VALUE)
+                .addComponent(Save, javax.swing.GroupLayout.PREFERRED_SIZE, 80, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(70, 70, 70)
                 .addComponent(panelReturn, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, mainPanelLayout.createSequentialGroup()
                 .addContainerGap()
@@ -237,7 +261,9 @@ public class MainGameView extends javax.swing.JFrame {
             .addGroup(mainPanelLayout.createSequentialGroup()
                 .addGroup(mainPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addComponent(jLabel3)
-                    .addComponent(panelReturn, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addGroup(mainPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
+                        .addComponent(Save, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.PREFERRED_SIZE, 0, Short.MAX_VALUE)
+                        .addComponent(panelReturn, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)))
                 .addGap(27, 27, 27)
                 .addGroup(mainPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addComponent(Mapa, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
@@ -288,15 +314,22 @@ public class MainGameView extends javax.swing.JFrame {
         }
     }//GEN-LAST:event_panelButtonYesMouseClicked
 
+    private void SaveMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_SaveMouseClicked
+        // TODO add your handling code here:
+        guardar(outputTextArea, "Parties");
+    }//GEN-LAST:event_SaveMouseClicked
+
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JPanel Mapa;
+    private javax.swing.JPanel Save;
     private javax.swing.JLabel eventIcon;
     private javax.swing.JPanel eventPanel;
     private javax.swing.JLabel jLabel3;
     private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JLabel labelContinue;
     private javax.swing.JLabel labelHigherValue;
+    private javax.swing.JLabel labelHigherValue1;
     private javax.swing.JLabel labelInventory;
     private javax.swing.JLabel labelLessValue;
     private javax.swing.JLabel labelRegresar;
@@ -465,6 +498,32 @@ public class MainGameView extends javax.swing.JFrame {
         this.outputTextArea.setText("");
         for (String gemName : list) {
             outputTextArea.append(gemName + "\n");
+        }
+    }
+    
+    //Save 
+    private static void guardar(JTextArea textArea, String nombreArchivo) {
+        int siguientePartida = 1;
+
+        try (BufferedReader reader = new BufferedReader(new FileReader(nombreArchivo))) {
+            String linea;
+            while ((linea = reader.readLine()) != null) {
+                if (linea.startsWith("Partida ")) {
+                    siguientePartida++;
+                }
+            }
+        } catch (IOException e) {
+            //
+        }
+        try (FileWriter fileWriter = new FileWriter(nombreArchivo, true)) {
+            fileWriter.write("Partida " + siguientePartida + ":" + "\n");
+            fileWriter.write(textArea.getText());
+            fileWriter.write("\n" + "----" + "\n\n");
+
+            JOptionPane.showMessageDialog(null, "Datos de la partida " + siguientePartida + " agregados exitosamente.", "Éxito", JOptionPane.INFORMATION_MESSAGE);
+        } catch (IOException e) {
+            JOptionPane.showMessageDialog(null, "Error al guardar el archivo: " + e.getMessage(), "Error", JOptionPane.ERROR_MESSAGE);
+            e.printStackTrace();
         }
     }
 }
